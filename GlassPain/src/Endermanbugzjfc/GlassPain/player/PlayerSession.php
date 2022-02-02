@@ -27,14 +27,18 @@ class PlayerSession
      */
     protected static array $sessions = [];
 
-    public static function open(Player $player) : self
+    public static function open(
+        Player $player
+    ) : self
     {
         return self::$sessions[spl_object_id($player)] = new self(
             $player
         );
     }
 
-    public static function get(Player $player) : self
+    public static function get(
+        Player $player
+    ) : self
     {
         return self::$sessions[spl_object_id($player)]
             ??= self::open($player);
