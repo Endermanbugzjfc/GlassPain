@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use SOFe\AwaitStd\Await;
 use SOFe\AwaitStd\AwaitStd;
+use SOFe\AwaitStd\DisposeException;
 use function array_diff;
 use function array_keys;
 use function spl_object_id;
@@ -19,9 +20,13 @@ class PlayerSession
     )
     {
         Await::f2c(function () {
-            $std = GlassPain::getInstance()->getStd();
-            while (true) {
-                $this->coroutine($std);
+            try {
+                $std = GlassPain::getInstance()->getStd();
+                while (true) {
+                    $this->coroutine($std);
+                }
+            } catch (DisposeException) {
+                $this->close();
             }
         });
     }
