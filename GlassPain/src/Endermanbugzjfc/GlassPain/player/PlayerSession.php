@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\GlassPain\player;
 
 use pocketmine\player\Player;
+use pocketmine\Server;
 use function spl_object_id;
 
 class PlayerSession
@@ -28,9 +29,23 @@ class PlayerSession
     protected static array $sessions = [];
 
     public static function open(
-        Player $player
+        Player $player,
+        bool   $clean = false
     ) : self
     {
+        if ($clean) {
+            foreach (
+                Server::getInstance()->getOnlinePlayers()
+                as $sPlayer
+            ) {
+                if ($sPlayer === $player) {
+                    continue;
+                }
+                if (self::get($sPlayer) === null) {
+                    self::open($player);
+                }
+            }
+        }
         return self::$sessions[spl_object_id($player)] = new self(
             $player
         );
@@ -41,7 +56,7 @@ class PlayerSession
     ) : self
     {
         return self::$sessions[spl_object_id($player)]
-            ??= self::open($player);
+            ??= self::open($player, true);
     }
 
 }
