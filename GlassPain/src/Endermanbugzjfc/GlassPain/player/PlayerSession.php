@@ -33,6 +33,28 @@ class PlayerSession
         // TODO: Get default triggering blocks
     }
 
+    public function isTriggeringBlock(
+        Block $getBlock
+    ) : bool
+    {
+    }
+
+    public function nextTriggeringBlockPlace(
+        AwaitStd $std
+    ) : Generator
+    {
+        return $std->awaitEvent(
+            BlockPlaceEvent::class,
+            fn(BlockPlaceEvent $event) => $event->getPlayer() === $this->getPlayer()
+                and
+                $this->isTriggeringBlock($event->getBlock()),
+            false,
+            EventPriority::MONITOR,
+            false,
+            $this->getPlayer()
+        );
+    }
+
     public function __construct(
         protected Player $player
     )
@@ -51,20 +73,10 @@ class PlayerSession
 
     public function coroutine(
         AwaitStd $std,
-        Player $player
+        Player   $player
     ) : Generator
     {
-        $event = yield $std->awaitEvent(
-            BlockPlaceEvent::class,
-            fn(BlockPlaceEvent $event) => $event
-                    ->getPlayer()
-                === $this
-                    ->getPlayer(),
-            false,
-            EventPriority::MONITOR,
-            false,
-            $player
-        );
+        $event = yield $this->nextTriggeringBlockPlace($std);
         // TODO: Check for permission
     }
 
