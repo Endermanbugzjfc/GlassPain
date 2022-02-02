@@ -9,4 +9,6 @@ interface AnimationInterface
 
     public function canUse(PlayerSession $playerSession) : bool;
 
+    public function getIdentifier() : string;
+
 }
