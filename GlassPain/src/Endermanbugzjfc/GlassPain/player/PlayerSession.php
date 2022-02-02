@@ -50,6 +50,7 @@ class PlayerSession
             false,
             $player
         );
+        // TODO: Check for permission
     }
 
     protected function close(
