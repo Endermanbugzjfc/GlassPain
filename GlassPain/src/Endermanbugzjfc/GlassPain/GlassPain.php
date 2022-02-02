@@ -3,9 +3,12 @@
 namespace Endermanbugzjfc\GlassPain;
 
 use pocketmine\plugin\PluginBase;
+use SOFe\AwaitStd\AwaitStd;
 
 class GlassPain extends PluginBase
 {
+
+    protected AwaitStd $std;
 
     protected function onEnable() : void
     {
@@ -13,6 +16,15 @@ class GlassPain extends PluginBase
             new EventListener(),
             $this
         );
+        $this->std = AwaitStd::init($this);
+    }
+
+    /**
+     * @return AwaitStd
+     */
+    public function getStd() : AwaitStd
+    {
+        return $this->std;
     }
 
     protected function onLoad() : void
