@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\GlassPain\player;
 
 use Endermanbugzjfc\GlassPain\GlassPain;
 use Generator;
+use pocketmine\block\Block;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
 use pocketmine\player\Player;
@@ -17,6 +18,20 @@ use function spl_object_id;
 
 class PlayerSession
 {
+
+    /**
+     * @var Block[]
+     */
+    protected array $triggeringBlocks;
+
+    /**
+     * @return Block[]
+     */
+    public function getTriggeringBlocks() : array
+    {
+        return $this->triggeringBlocks;
+        // TODO: Get default triggering blocks
+    }
 
     public function __construct(
         protected Player $player
