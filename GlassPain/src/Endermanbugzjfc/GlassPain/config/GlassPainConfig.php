@@ -7,8 +7,8 @@ use Endermanbugzjfc\ConfigStruct\KeyName;
 class GlassPainConfig
 {
 
-    #[KeyName("fallback-animation")]
-    public ?string $fallbackAnimation = null;
+    #[KeyName("default-animation")]
+    public ?string $defaultAnimation = null;
 
     #[KeyName("default-triggering-blocks")]
     public array $defaultTriggeringBlocks = [
