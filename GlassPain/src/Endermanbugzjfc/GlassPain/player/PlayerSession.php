@@ -2,8 +2,11 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
+use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\player\Player;
 use pocketmine\Server;
+use SOFe\AwaitStd\Await;
+use SOFe\AwaitStd\AwaitStd;
 use function array_diff;
 use function array_keys;
 use function spl_object_id;
@@ -14,6 +17,18 @@ class PlayerSession
     public function __construct(
         protected Player $player
     )
+    {
+        Await::f2c(function () {
+            $std = GlassPain::getInstance()->getStd();
+            while (true) {
+                $this->coroutine($std);
+            }
+        });
+    }
+
+    public function coroutine(
+        AwaitStd $std
+    ) : void
     {
     }
 
