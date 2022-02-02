@@ -3,6 +3,9 @@
 namespace Endermanbugzjfc\GlassPain\player;
 
 use Endermanbugzjfc\GlassPain\GlassPain;
+use Generator;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\EventPriority;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use SOFe\AwaitStd\Await;
@@ -23,7 +26,7 @@ class PlayerSession
             try {
                 $std = GlassPain::getInstance()->getStd();
                 while (true) {
-                    $this->coroutine($std);
+                    $this->coroutine($std, $this->getPlayer());
                 }
             } catch (DisposeException) {
                 $this->close();
@@ -32,9 +35,21 @@ class PlayerSession
     }
 
     public function coroutine(
-        AwaitStd $std
-    ) : void
+        AwaitStd $std,
+        Player $player
+    ) : Generator
     {
+        $event = yield $std->awaitEvent(
+            BlockPlaceEvent::class,
+            fn(BlockPlaceEvent $event) => $event
+                    ->getPlayer()
+                === $this
+                    ->getPlayer(),
+            false,
+            EventPriority::MONITOR,
+            false,
+            $player
+        );
     }
 
     protected function close(
