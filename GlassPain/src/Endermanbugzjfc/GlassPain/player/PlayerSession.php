@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\GlassPain\player;
 
 use pocketmine\player\Player;
 
-final class PlayerSession
+class PlayerSession
 {
 
     public function __construct(
