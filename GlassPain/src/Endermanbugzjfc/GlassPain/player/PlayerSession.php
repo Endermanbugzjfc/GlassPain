@@ -4,6 +4,8 @@ namespace Endermanbugzjfc\GlassPain\player;
 
 use pocketmine\player\Player;
 use pocketmine\Server;
+use function array_diff;
+use function array_keys;
 use function spl_object_id;
 
 class PlayerSession
@@ -13,6 +15,13 @@ class PlayerSession
         protected Player $player
     )
     {
+    }
+
+    protected function close(
+        bool $clean = false
+    ) : void
+    {
+
     }
 
     /**
@@ -44,6 +53,14 @@ class PlayerSession
                 if (self::get($sPlayer) === null) {
                     self::open($player);
                 }
+                $ids[] = spl_object_id($sPlayer);
+            }
+            $leakedSessionsIds = array_diff(
+                array_keys(self::$sessions),
+                $ids ?? []
+            );
+            foreach ($leakedSessionsIds as $leakedSessionsId) {
+                self::$sessions[$leakedSessionsId]->close(true);
             }
         }
         return self::$sessions[spl_object_id($player)] = new self(
