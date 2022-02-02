@@ -13,6 +13,11 @@ class PlayerSession
     {
     }
 
+    public static function open(Player $player) : self
+    {
+
+    }
+
     /**
      * @return Player
      */
