@@ -41,7 +41,7 @@ class PlayerSession
         bool $clean = false
     ) : void
     {
-
+        unset(self::$sessions[spl_object_id($this->getPlayer())]);
     }
 
     /**
