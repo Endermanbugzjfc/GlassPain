@@ -90,8 +90,11 @@ class AnimationConfig
 
     }
 
-    public function getPanelFormTitle() : string {
-        return $this->panelFormTitle
+    public static function getPanelFormTitle(
+        ?self $config
+    ) : string
+    {
+        return $config?->panelFormTitle
             ?? GlassPain::getInstance()->config->fallbackPanelFormTitle;
     }
 
