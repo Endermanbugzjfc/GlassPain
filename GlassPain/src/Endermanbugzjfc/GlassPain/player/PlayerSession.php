@@ -6,7 +6,6 @@ use Endermanbugzjfc\GlassPain\GlassPain;
 use Generator;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
-use pocketmine\item\ItemBlock;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use SOFe\AwaitStd\Await;
@@ -42,11 +41,11 @@ class PlayerSession
         protected Player $player
     )
     {
+        $this->dataProvider = new DataProvider(
+            GlassPain::getInstance()->getDataConnector(),
+            $this
+        );
         Await::f2c(function () {
-            $this->dataProvider = new DataProvider(
-                GlassPain::getInstance()->getDataConnector(),
-                $this
-            );
             try {
                 $std = GlassPain::getInstance()->getStd();
                 while (true) {
