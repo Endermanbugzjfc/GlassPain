@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
+use Endermanbugzjfc\GlassPain\GlassPain;
 use Endermanbugzjfc\GlassPain\Utils;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\item\ItemBlock;
@@ -86,6 +87,11 @@ class AnimationConfig
 
     public function getAnimationInstance() : AnimationInterface {
 
+    }
+
+    public function getPanelFormTitle() : string {
+        return $this->panelFormTitle
+            ?? GlassPain::getInstance()->config->fallbackPanelFormTitle;
     }
 
 }
