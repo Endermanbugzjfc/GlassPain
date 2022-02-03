@@ -85,7 +85,8 @@ class AnimationConfig
         return $return ?? [];
     }
 
-    public function getAnimationInstance() : AnimationInterface {
+    public function getAnimationInstance() : AnimationInterface
+    {
 
     }
 
