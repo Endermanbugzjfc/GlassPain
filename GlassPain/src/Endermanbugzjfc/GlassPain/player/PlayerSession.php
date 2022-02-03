@@ -13,7 +13,7 @@ use function spl_object_id;
 
 class PlayerSession
 {
-    use TriggeringBlocksManagerTrait,
+    use AnimationManagerTrait,
         CoroutineTrait,
         PlayerSessionManagerTrait;
 
