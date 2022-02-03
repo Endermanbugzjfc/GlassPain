@@ -5,6 +5,8 @@ namespace Endermanbugzjfc\GlassPain\animation;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\GlassPain\Utils;
 use pocketmine\block\utils\DyeColor;
+use pocketmine\item\ItemBlock;
+use pocketmine\item\StringToItemParser;
 
 class AnimationConfig
 {
@@ -45,6 +47,19 @@ class AnimationConfig
         }
         $blocks[] = "iron_bars";
         $this->triggeringBlocks = $blocks;
+    }
+
+    /**
+     * @return ItemBlock[] Key = block ID.
+     */
+    public function parseTriggeringBlockIds() : array
+    {
+        foreach ($this->triggeringBlocks as $block) {
+            $return[$block] = StringToItemParser::getInstance()->parse(
+                $block
+            );
+        }
+        return $return ?? [];
     }
 
 }
