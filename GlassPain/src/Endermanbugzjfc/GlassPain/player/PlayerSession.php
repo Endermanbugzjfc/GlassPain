@@ -18,26 +18,7 @@ use function spl_object_id;
 
 class PlayerSession
 {
-
-    /**
-     * @var Block[]
-     */
-    protected array $triggeringBlocks;
-
-    /**
-     * @return Block[]
-     */
-    public function getTriggeringBlocks() : array
-    {
-        return $this->triggeringBlocks;
-        // TODO: Get default triggering blocks
-    }
-
-    public function isTriggeringBlock(
-        Block $getBlock
-    ) : bool
-    {
-    }
+    use TriggeringBlocksManagerTrait;
 
     public function nextTriggeringBlockPlace(
         AwaitStd $std
