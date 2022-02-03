@@ -11,4 +11,7 @@ class ConfigRoot
 
     #[KeyName("default-animation")] public ?AnimationConfig $defaultAnimation = null;
 
+    #[KeyName("fallback-panel-form-title")]
+    public string $fallbackPanelFormTitle = "for copy paste ->> § <<-";
+
 }
