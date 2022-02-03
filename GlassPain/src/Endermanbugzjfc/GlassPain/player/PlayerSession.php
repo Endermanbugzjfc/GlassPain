@@ -2,15 +2,14 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
+use Endermanbugzjfc\GlassPain\events\TriggeringBlockPlaceEvent;
 use Endermanbugzjfc\GlassPain\GlassPain;
 use Generator;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use SOFe\AwaitStd\Await;
 use SOFe\AwaitStd\AwaitStd;
-use SOFe\AwaitStd\DisposeException;
 use function array_diff;
 use function array_keys;
 use function spl_object_id;
@@ -21,11 +20,24 @@ class PlayerSession
 
     protected DataProvider $dataProvider;
 
-    public function nextTriggeringBlockPlace(
+    public function __construct(
+        protected Player $player
+    )
+    {
+        $this->dataProvider = new DataProvider(
+            GlassPain::getInstance()->getDataConnector(),
+            $this
+        );
+        $this->concurrentLoop(
+            fn(AwaitStd $std) => $this->callTriggeringBlockPlaceEvent($std)
+        );
+    }
+
+    public function callTriggeringBlockPlaceEvent(
         AwaitStd $std
     ) : Generator
     {
-        return $std->awaitEvent(
+        $event = yield from $std->awaitEvent(
             BlockPlaceEvent::class,
             fn(BlockPlaceEvent $event) => $event->getPlayer() === $this->getPlayer()
                 and
@@ -35,35 +47,10 @@ class PlayerSession
             false,
             $this->getPlayer()
         );
-    }
-
-    public function __construct(
-        protected Player $player
-    )
-    {
-        $this->dataProvider = new DataProvider(
-            GlassPain::getInstance()->getDataConnector(),
-            $this
-        );
-        Await::f2c(function () {
-            try {
-                $std = GlassPain::getInstance()->getStd();
-                while (true) {
-                    $this->coroutine($std, $this->getPlayer());
-                }
-            } catch (DisposeException) {
-                $this->close();
-            }
-        });
-    }
-
-    public function coroutine(
-        AwaitStd $std,
-        Player   $player
-    ) : Generator
-    {
-        $event = yield from $this->nextTriggeringBlockPlace($std);
-        // TODO: Check for permission
+        (new TriggeringBlockPlaceEvent(
+            $this,
+            $event
+        ))->call();
     }
 
     protected function close(
