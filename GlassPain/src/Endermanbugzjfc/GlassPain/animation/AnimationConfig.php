@@ -48,6 +48,9 @@ class AnimationConfig
     #[KeyName("edit-triggering-block-permission")]
     public ?string $editTriggeringBlockPermission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
 
+    #[KeyName("display-name")]
+    public string $displayName = "for copy paste ->> § <<-";
+
     public function __construct()
     {
         foreach ([
