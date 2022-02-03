@@ -17,7 +17,7 @@ use function spl_object_id;
 
 class PlayerSession
 {
-    use TriggeringBlocksManagerTrait;
+    use TriggeringBlocksManagerTrait, CoroutineTrait;
 
     protected DataProvider $dataProvider;
 
