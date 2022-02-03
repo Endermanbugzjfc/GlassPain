@@ -19,6 +19,8 @@ class PlayerSession
 
     protected DataProvider $dataProvider;
 
+    protected bool $initializationCompleted = false;
+
     public function __construct(
         protected Player $player
     )
@@ -73,6 +75,14 @@ class PlayerSession
     public function getPlayer() : Player
     {
         return $this->player;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitializationCompleted() : bool
+    {
+        return $this->initializationCompleted;
     }
 
 }
