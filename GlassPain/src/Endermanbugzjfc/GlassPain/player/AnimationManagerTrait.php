@@ -14,7 +14,8 @@ trait AnimationManagerTrait
     /**
      * @return AnimationConfig[]
      */
-    public function getAvailableAnimations() : array {
+    public function getAvailableAnimations() : array
+    {
 
     }
 
