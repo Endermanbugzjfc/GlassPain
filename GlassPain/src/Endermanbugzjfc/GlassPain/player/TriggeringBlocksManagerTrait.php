@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\GlassPain\player;
 
 use Endermanbugzjfc\GlassPain\GlassPain;
+use pocketmine\block\Block;
 use pocketmine\item\ItemBlock;
 
 trait TriggeringBlocksManagerTrait
@@ -28,11 +29,11 @@ trait TriggeringBlocksManagerTrait
     }
 
     public function isTriggeringBlock(
-        ItemBlock $block
+        Block $block
     ) : bool
     {
         foreach ($this->getTriggeringBlocks() as $sBlock) {
-            if ($block->equals(
+            if ($block->asItem()->equals(
                 $sBlock,
                 true,
                 false
