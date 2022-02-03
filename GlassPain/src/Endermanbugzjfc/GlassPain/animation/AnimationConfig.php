@@ -52,7 +52,7 @@ class AnimationConfig
     public string $displayName = "for copy paste ->> § <<-";
 
     #[KeyName("panel-form-title")]
-    public string $panelFormTitle = "for copy paste ->> § <<-";
+    public ?string $panelFormTitle = "null = use the one in config.yml";
 
     public function __construct()
     {
