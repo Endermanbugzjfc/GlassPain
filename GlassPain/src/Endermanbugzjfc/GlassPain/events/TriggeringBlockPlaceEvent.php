@@ -9,8 +9,8 @@ class TriggeringBlockPlaceEvent extends GlassPainEvent
 {
 
     public function __construct(
-        protected BlockPlaceEvent $blockPlaceEvent,
-        protected PlayerSession   $playerSession
+        protected PlayerSession   $playerSession,
+        protected BlockPlaceEvent $blockPlaceEvent
     )
     {
         parent::__construct();
