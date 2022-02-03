@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\GlassPain\GlassPainUtils;
 
-class AnimationConfiguration
+class AnimationConfig
 {
 
     public string $class = "please refer to the information provided by your animation plugin";
