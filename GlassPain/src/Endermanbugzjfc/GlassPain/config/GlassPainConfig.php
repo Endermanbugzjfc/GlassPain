@@ -3,13 +3,14 @@
 namespace Endermanbugzjfc\GlassPain\config;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
+use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
 use pocketmine\block\utils\DyeColor;
 
 class GlassPainConfig
 {
 
     #[KeyName("default-animation")]
-    public ?string $defaultAnimation = null;
+    public ?AnimationConfig $defaultAnimation = null;
 
     #[KeyName("default-triggering-blocks")]
     public array $defaultTriggeringBlocks;
