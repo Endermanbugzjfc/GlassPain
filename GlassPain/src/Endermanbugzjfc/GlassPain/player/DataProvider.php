@@ -1,12 +1,12 @@
 <?php
 
-namespace Endermanbugzjfc\GlassPain;
+namespace Endermanbugzjfc\GlassPain\player;
 
 use Generator;
 use poggit\libasynql\DataConnector;
 use SOFe\AwaitStd\Await;
 
-class Database
+class DataProvider
 {
 
     public function __construct(
