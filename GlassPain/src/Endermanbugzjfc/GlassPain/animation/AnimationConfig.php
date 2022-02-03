@@ -51,6 +51,9 @@ class AnimationConfig
     #[KeyName("display-name")]
     public string $displayName = "for copy paste ->> § <<-";
 
+    #[KeyName("panel-form-title")]
+    public string $panelFormTitle = "for copy paste ->> § <<-";
+
     public function __construct()
     {
         foreach ([
