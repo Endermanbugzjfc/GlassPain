@@ -8,7 +8,7 @@ use SOFe\AwaitStd\Await;
 trait CoroutineTrait
 {
 
-    public function concurrentLoop(
+    private function concurrentLoop(
         Closure $run
     ) : void {
         Await::f2c(function() use
