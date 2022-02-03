@@ -7,6 +7,6 @@ use Endermanbugzjfc\GlassPain\player\PlayerSession;
 interface AnimationInterface
 {
 
-    public static function getIdentifier() : string;
+    public function getIdentifier() : string;
 
 }
