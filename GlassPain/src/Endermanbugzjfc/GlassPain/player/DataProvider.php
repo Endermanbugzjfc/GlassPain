@@ -10,15 +10,18 @@ class DataProvider
 {
 
     public function __construct(
-        protected DataConnector $connector
+        protected DataConnector $connector,
+        protected PlayerSession $playerSession
     )
     {
     }
 
     public function select(
         string $query,
-        array $param
-    ) : Generator {
+        array  $param
+    ) : Generator
+    {
+        $this->addUniqueIdParam($param);
         $this->connector->executeSelect(
             $query,
             $param,
@@ -26,6 +29,12 @@ class DataProvider
             yield Await::REJECT
         );
         yield Await::ONCE;
+    }
+
+    protected function addUniqueIdParam(
+        array &$param
+    ) : void
+    {
     }
 
 }
