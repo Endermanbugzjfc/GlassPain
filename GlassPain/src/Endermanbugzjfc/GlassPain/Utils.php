@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\GlassPain;
 
-class GlassPainUtils
+class Utils
 {
 
     public const LOWERCASE_PLUGIN_NAME = "glasspain";
