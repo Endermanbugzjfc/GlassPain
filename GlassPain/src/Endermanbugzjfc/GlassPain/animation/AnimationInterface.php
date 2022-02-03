@@ -9,4 +9,6 @@ interface AnimationInterface
 
     public function getIdentifier() : string;
 
+    public function getDisplayName() : string;
+
 }
