@@ -2,17 +2,17 @@
 
 namespace Endermanbugzjfc\GlassPain\animation;
 
-use Endermanbugzjfc\GlassPain\GlassPainUtils;
+use Endermanbugzjfc\GlassPain\Utils;
 
 class AnimationConfig
 {
 
     public string $class = "please refer to the information provided by your animation plugin";
 
-    public string $permission = GlassPainUtils::LOWERCASE_PLUGIN_NAME . ".animation.";
+    public string $permission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
 
     public array $optionPermissions = [
-        "option" => GlassPainUtils::LOWERCASE_PLUGIN_NAME . ".animation-option.",
+        "option" => Utils::LOWERCASE_PLUGIN_NAME . ".animation-option.",
         "option-without-permission" => null
     ];
 
