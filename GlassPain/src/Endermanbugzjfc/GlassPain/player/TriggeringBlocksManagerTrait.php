@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
+use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\item\ItemBlock;
 
 trait TriggeringBlocksManagerTrait
@@ -17,8 +18,13 @@ trait TriggeringBlocksManagerTrait
      */
     public function getTriggeringBlocks() : array
     {
-        return $this->triggeringBlocks;
-        // TODO: Get default triggering blocks
+        return $this->triggeringBlocks ?? (GlassPain
+                    ::getInstance()
+                    ->config
+                    ->defaultAnimation
+                    ?->parseTriggeringBlockIds()
+                ?? []
+            );
     }
 
     public function isTriggeringBlock(
