@@ -26,6 +26,13 @@ trait AnimationManagerTrait
     }
 
     /**
+     * @return AnimationConfig|null The {@link AnimationConfig} is a clone of the global one and hold options which may be modified by the player.
+     */
+    public function getAnimation() : ?AnimationConfig {
+
+    }
+
+    /**
      * @var ItemBlock[]
      */
     protected array $triggeringBlocks;
