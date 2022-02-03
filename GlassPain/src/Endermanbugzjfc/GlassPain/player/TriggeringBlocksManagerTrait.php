@@ -25,7 +25,16 @@ trait TriggeringBlocksManagerTrait
         ItemBlock $block
     ) : bool
     {
-
+        foreach ($this->getTriggeringBlocks() as $sBlock) {
+            if ($block->equals(
+                $sBlock,
+                true,
+                false
+            )) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
