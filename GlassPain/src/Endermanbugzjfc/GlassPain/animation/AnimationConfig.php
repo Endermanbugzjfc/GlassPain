@@ -11,20 +11,36 @@ use pocketmine\item\StringToItemParser;
 class AnimationConfig
 {
 
+    /**
+     * @var string
+     * @phpstan-param class-string<AnimationInterface>
+     */
     public string $class = "please refer to the information provided by your animation plugin";
 
+    /**
+     * @var string Permission to own and apply this animation.
+     */
     public string $permission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
 
+    /**
+     * @var string[] Key = option name.
+     */
     #[KeyName("option-permission")]
     public array $optionPermissions = [
         "option" => Utils::LOWERCASE_PLUGIN_NAME . ".animation-option.",
         "option-without-permission" => null
     ];
 
+    /**
+     * @var array Key = option name.
+     */
     #[KeyName("default-option-values")]
     public array $defaultOptionValues = [
     ];
 
+    /**
+     * @var string[]
+     */
     #[KeyName("triggering-blocks")]
     public array $triggeringBlocks = [
     ];
