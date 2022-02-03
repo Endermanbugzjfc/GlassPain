@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\GlassPain\player;
 
 use Closure;
+use Endermanbugzjfc\GlassPain\GlassPain;
 use SOFe\AwaitStd\Await;
 
 trait CoroutineTrait
@@ -15,8 +16,9 @@ trait CoroutineTrait
         (
             $run
         ) {
+            $std = GlassPain::getInstance()->getStd();
             while (true) {
-                if ($run() !== null) {
+                if ($run($std) !== null) {
                     return;
                 }
             }
