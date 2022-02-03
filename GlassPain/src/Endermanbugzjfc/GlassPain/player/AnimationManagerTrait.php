@@ -19,7 +19,7 @@ trait AnimationManagerTrait
     }
 
     /**
-     * @return AnimationConfig[] With modified options, ordered by last enable time from old to recent.
+     * @return AnimationConfig[] The {@link AnimationConfig} is a clone of the global one and hold options which may be modified by the player. Ordered by last enable time from old to recent.
      */
     public function getAnimations() : array
     {
