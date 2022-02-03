@@ -20,6 +20,8 @@ class PlayerSession
 {
     use TriggeringBlocksManagerTrait;
 
+    protected DataProvider $dataProvider;
+
     public function nextTriggeringBlockPlace(
         AwaitStd $std
     ) : Generator
@@ -41,6 +43,10 @@ class PlayerSession
     )
     {
         Await::f2c(function () {
+            $this->dataProvider = new DataProvider(
+                GlassPain::getInstance()->getDataConnector(),
+                $this
+            );
             try {
                 $std = GlassPain::getInstance()->getStd();
                 while (true) {
@@ -66,6 +72,14 @@ class PlayerSession
     ) : void
     {
         unset(self::$sessions[spl_object_id($this->getPlayer())]);
+    }
+
+    /**
+     * @return DataProvider
+     */
+    public function getDataProvider() : DataProvider
+    {
+        return $this->dataProvider;
     }
 
     /**
