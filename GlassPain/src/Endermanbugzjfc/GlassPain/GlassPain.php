@@ -6,6 +6,9 @@ use Endermanbugzjfc\ConfigStruct\emit\Emit;
 use Endermanbugzjfc\ConfigStruct\parse\Parse;
 use Endermanbugzjfc\GlassPain\config\ConfigRoot;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Config;
+use poggit\libasynql\DataConnector;
+use poggit\libasynql\libasynql;
 use SOFe\AwaitStd\AwaitStd;
 use function file_exists;
 use function yaml_emit_file;
@@ -17,6 +20,8 @@ class GlassPain extends PluginBase
     protected AwaitStd $std;
 
     public ConfigRoot $config;
+
+    protected DataConnector $dataConnector;
 
     protected function onEnable() : void
     {
@@ -36,6 +41,18 @@ class GlassPain extends PluginBase
             $this
         );
         $this->std = AwaitStd::init($this);
+
+        $this->saveResource($databaseConfig = "database.yml");
+        $this->dataConnector = libasynql::create(
+            $this,
+            (new Config(
+                $this->getDataFolder() . $databaseConfig
+            ))->getAll(),
+            [
+                "sqlite" => "sql/sqlite.sql",
+                "mysql" => "mysql/mysql.sql"
+            ]
+        );
     }
 
     /**
@@ -46,9 +63,22 @@ class GlassPain extends PluginBase
         return $this->std;
     }
 
+    /**
+     * @return DataConnector
+     */
+    public function getDataConnector() : DataConnector
+    {
+        return $this->dataConnector;
+    }
+
     protected function onLoad() : void
     {
         self::$instance = $this;
+    }
+
+    protected function onDisable() : void
+    {
+        $this->getDataConnector()->close();
     }
 
     protected static self $instance;
