@@ -28,11 +28,11 @@ class PlayerSession
             $this
         );
         $this->concurrentLoop(
-            fn(AwaitStd $std) => $this->callTriggeringBlockPlaceEvent($std)
+            fn(AwaitStd $std) => $this->awaitTriggeringBlockPlace($std)
         );
     }
 
-    public function callTriggeringBlockPlaceEvent(
+    public function awaitTriggeringBlockPlace(
         AwaitStd $std
     ) : Generator
     {
