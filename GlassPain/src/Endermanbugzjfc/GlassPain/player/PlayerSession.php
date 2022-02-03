@@ -4,9 +4,9 @@ namespace Endermanbugzjfc\GlassPain\player;
 
 use Endermanbugzjfc\GlassPain\GlassPain;
 use Generator;
-use pocketmine\block\Block;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
+use pocketmine\item\ItemBlock;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use SOFe\AwaitStd\Await;
@@ -57,7 +57,7 @@ class PlayerSession
         Player   $player
     ) : Generator
     {
-        $event = yield $this->nextTriggeringBlockPlace($std);
+        $event = yield from $this->nextTriggeringBlockPlace($std);
         // TODO: Check for permission
     }
 
