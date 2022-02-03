@@ -2,18 +2,18 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
-use pocketmine\block\Block;
+use pocketmine\item\ItemBlock;
 
 trait TriggeringBlocksManagerTrait
 {
 
     /**
-     * @var Block[]
+     * @var ItemBlock[]
      */
     protected array $triggeringBlocks;
 
     /**
-     * @return Block[]
+     * @return ItemBlock[]
      */
     public function getTriggeringBlocks() : array
     {
@@ -22,9 +22,10 @@ trait TriggeringBlocksManagerTrait
     }
 
     public function isTriggeringBlock(
-        Block $getBlock
+        ItemBlock $block
     ) : bool
     {
+
     }
 
 }
