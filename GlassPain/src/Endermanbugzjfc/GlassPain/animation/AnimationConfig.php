@@ -23,6 +23,8 @@ class AnimationConfig
     public array $triggeringBlocks = [
     ];
 
+    public ?string $editTriggeringBlockPermission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
+
     public function __construct()
     {
         foreach ([
