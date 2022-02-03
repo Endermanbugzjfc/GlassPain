@@ -12,3 +12,15 @@ CREATE TABLE IF NOT EXISTS glass_pain_player_animation_config
 );
 -- #    }
 -- #}
+-- #{ player
+-- #    { animation
+-- #        { get_all
+-- #          :uuid string
+SELECT animation,
+       config
+FROM glass_pain_player_animation_config
+WHERE uuid = :uuid
+ORDER BY last_enable DESC
+-- #        {
+-- #    }
+-- #}
