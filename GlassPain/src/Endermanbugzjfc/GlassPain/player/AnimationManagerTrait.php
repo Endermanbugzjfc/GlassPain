@@ -2,12 +2,21 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
+use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
+use Endermanbugzjfc\GlassPain\animation\AnimationInterface;
 use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\block\Block;
 use pocketmine\item\ItemBlock;
 
 trait AnimationManagerTrait
 {
+
+    /**
+     * @return AnimationConfig[]
+     */
+    public function getAvailableAnimations() : array {
+
+    }
 
     /**
      * @var ItemBlock[]
