@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\GlassPain\player;
 
 use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
-use Endermanbugzjfc\GlassPain\animation\AnimationInterface;
 use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\block\Block;
 use pocketmine\item\ItemBlock;
@@ -17,6 +16,13 @@ trait AnimationManagerTrait
     public function getAvailableAnimations() : array
     {
 
+    }
+
+    /**
+     * @return AnimationConfig[] With modified options, ordered by last enable time from old to recent.
+     */
+    public function getAnimations() : array
+    {
     }
 
     /**
