@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\GlassPain\player;
 use Generator;
 use poggit\libasynql\DataConnector;
 use SOFe\AwaitStd\Await;
+use function bin2hex;
 
 class DataProvider
 {
@@ -35,6 +36,9 @@ class DataProvider
         array &$param
     ) : void
     {
+        $param["uuid"] = bin2hex(
+            $this->playerSession->getPlayer()->getUniqueId()->getBytes()
+        );
     }
 
 }
