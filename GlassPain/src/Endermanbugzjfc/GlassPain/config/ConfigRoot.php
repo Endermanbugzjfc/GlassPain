@@ -6,7 +6,7 @@ use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
 use pocketmine\block\utils\DyeColor;
 
-class GlassPainConfig
+class ConfigRoot
 {
 
     #[KeyName("default-animation")]
