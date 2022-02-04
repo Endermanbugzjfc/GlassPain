@@ -12,6 +12,9 @@ abstract class AnimationBase
         $return["speed"] = 1.0;
         return $return;
     }
+    
+    public function getConfig() : AnimationConfig {
+    }
 
     abstract protected function getMinimumPlayDuration() : float;
 
