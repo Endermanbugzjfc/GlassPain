@@ -11,4 +11,6 @@ interface AnimationInterface
         ?array $options
     ) : self;
 
+    public function getPlayTime() : float;
+
 }
