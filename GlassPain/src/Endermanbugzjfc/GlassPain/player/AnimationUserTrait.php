@@ -7,7 +7,7 @@ use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\block\Block;
 use pocketmine\item\ItemBlock;
 
-trait AnimationManagerTrait
+trait AnimationUserTrait
 {
 
     /**
