@@ -5,4 +5,5 @@ api: 4.0.0
 main: Endermanbugzjfc\GlassPain\GlassPain
 website: https://github.com/Endermanbugzjfc/GlassPain
 
-depend: [InfoAPI]
+depend:
+  - InfoAPI
