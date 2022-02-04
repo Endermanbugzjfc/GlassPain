@@ -9,15 +9,8 @@ abstract class AnimationBase
 
     public function getDefaultOptions() : array
     {
-        if (!$this->isInstantAnimation()) {
-            $return["speed"] = 1.0;
-        }
-        return $return ?? [];
-    }
-
-    private function isInstantAnimation() : bool
-    {
-        return $this->getMinimumPlayDuration() <= 0;
+        $return["speed"] = 1.0;
+        return $return;
     }
 
     abstract protected function getMinimumPlayDuration() : float;
