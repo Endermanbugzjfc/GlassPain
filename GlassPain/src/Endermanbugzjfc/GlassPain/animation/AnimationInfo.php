@@ -9,7 +9,7 @@ use SOFe\InfoAPI\Info;
 final class AnimationInfo extends Info
 {
     public function __construct(
-        protected AnimationConfig $animation
+        protected AnimationConfig $value
     )
     {
     }
@@ -26,9 +26,9 @@ final class AnimationInfo extends Info
     /**
      * @return AnimationConfig
      */
-    public function getAnimation() : AnimationConfig
+    public function getValue() : AnimationConfig
     {
-        return $this->animation;
+        return $this->value;
     }
 
 }
