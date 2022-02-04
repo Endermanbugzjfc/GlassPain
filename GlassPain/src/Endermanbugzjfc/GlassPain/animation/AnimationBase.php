@@ -18,4 +18,6 @@ abstract class AnimationBase
 
     abstract protected function getDefaultSpeedMultiplier() : float;
 
+    abstract protected function getDefaultPlayDuration() : float;
+
 }
