@@ -11,7 +11,12 @@ class ConfigRoot
 
     #[KeyName("default-animation")] public ?AnimationConfig $defaultAnimation = null;
 
-    #[KeyName("fallback-panel-form-title")]
-    public string $fallbackPanelFormTitle = "for copy paste ->> § <<-";
+    #[KeyName("panel-form")]
+    public ConfigPanelForm $panelForm;
+
+    public function __construct()
+    {
+        $this->panelForm = new ConfigPanelForm();
+    }
 
 }
