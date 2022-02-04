@@ -12,6 +12,9 @@ use pocketmine\item\StringToItemParser;
 class AnimationConfig
 {
 
+    #[KeyName("display-name")]
+    public string $displayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
+
     /**
      * @var string
      * @phpstan-param class-string<AnimationInterface>
@@ -42,9 +45,6 @@ class AnimationConfig
 
     #[KeyName("lock-triggering-blocks")]
     public bool $lockTriggeringBlocks = false;
-
-    #[KeyName("display-name")]
-    public string $displayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
 
     public function __construct()
     {
