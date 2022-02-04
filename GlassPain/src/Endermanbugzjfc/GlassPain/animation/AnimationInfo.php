@@ -16,6 +16,7 @@ final class AnimationInfo extends Info
 
     public function toString() : string
     {
+        return $this->getValue()->displayName;
     }
 
     public static function init() : void
