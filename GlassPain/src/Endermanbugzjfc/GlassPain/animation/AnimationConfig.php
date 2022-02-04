@@ -52,9 +52,6 @@ class AnimationConfig
     #[KeyName("display-name")]
     public string $displayName = "for copy paste ->> § <<-";
 
-    #[KeyName("panel-form-title")]
-    public ?string $panelFormTitle = "null = use the one in config.yml";
-
     public function __construct()
     {
         foreach ([
@@ -88,14 +85,6 @@ class AnimationConfig
     public function getAnimationInstance() : AnimationInterface
     {
 
-    }
-
-    public static function getPanelFormTitle(
-        ?self $config
-    ) : string
-    {
-        return $config?->panelFormTitle
-            ?? GlassPain::getInstance()->config->fallbackPanelFormTitle;
     }
 
 }
