@@ -4,13 +4,13 @@ namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\GlassPain\player\PlayerSession;
 
-interface AnimationInterface
+abstract class AnimationBase
 {
 
-    public static function load(
+    abstract public static function load(
         ?array $options
     ) : self;
 
-    public function getPlayDuration() : float;
+    abstract public function getPlayDuration() : float;
 
 }
