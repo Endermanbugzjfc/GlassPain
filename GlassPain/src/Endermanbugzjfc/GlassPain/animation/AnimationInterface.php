@@ -7,8 +7,8 @@ use Endermanbugzjfc\GlassPain\player\PlayerSession;
 interface AnimationInterface
 {
 
-    public function getIdentifier() : string;
-
-    public function getDisplayName() : string;
+    public static function load(
+        ?array $options
+    ) : self;
 
 }
