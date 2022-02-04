@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\GlassPain\player;
 
-use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
+use Endermanbugzjfc\GlassPain\animation\AnimationBase;
 use Endermanbugzjfc\GlassPain\GlassPain;
 use pocketmine\block\Block;
 use pocketmine\item\ItemBlock;
@@ -11,7 +11,7 @@ trait AnimationUserTrait
 {
 
     /**
-     * @return AnimationConfig[]
+     * @return AnimationBase[]
      */
     public function getAvailableAnimations() : array
     {
@@ -19,16 +19,14 @@ trait AnimationUserTrait
     }
 
     /**
-     * @return AnimationConfig[] The {@link AnimationConfig} is a clone of the global one and hold options which may be modified by the player. Ordered by last enable time from old to recent.
+     * @return AnimationBase[]
      */
     public function getAnimations() : array
     {
     }
 
-    /**
-     * @return AnimationConfig|null The {@link AnimationConfig} is a clone of the global one and hold options which may be modified by the player.
-     */
-    public function getAnimation() : ?AnimationConfig {
+    public function getAnimation() : ?AnimationBase
+    {
 
     }
 
