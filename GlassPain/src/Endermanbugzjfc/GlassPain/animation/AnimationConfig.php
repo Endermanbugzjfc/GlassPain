@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
-use Endermanbugzjfc\GlassPain\GlassPain;
 use Endermanbugzjfc\GlassPain\Utils;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\item\ItemBlock;
@@ -50,7 +49,7 @@ class AnimationConfig
     public ?string $editTriggeringBlockPermission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
 
     #[KeyName("display-name")]
-    public string $displayName = "for copy paste ->> § <<-";
+    public string $displayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
 
     public function __construct()
     {
