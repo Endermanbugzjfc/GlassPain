@@ -16,6 +16,10 @@ abstract class AnimationBase
     public function getConfig() : AnimationConfig {
     }
 
+    public function getInfo() : AnimationInfo {
+
+    }
+
     abstract protected function getMinimumPlayDuration() : float;
 
     abstract protected function getDefaultPlayDuration() : float;
