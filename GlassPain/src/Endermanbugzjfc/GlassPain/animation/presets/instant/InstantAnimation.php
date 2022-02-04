@@ -7,4 +7,14 @@ use Endermanbugzjfc\GlassPain\animation\AnimationBase;
 class InstantAnimation extends AnimationBase
 {
 
+    protected function getMinimumPlayDuration() : float
+    {
+        return 0;
+    }
+
+    protected function getDefaultPlayDuration() : float
+    {
+        return 0;
+    }
+
 }
