@@ -11,6 +11,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
 use pocketmine\player\Player;
 use SOFe\AwaitStd\AwaitStd;
+use SOFe\InfoAPI\PlayerInfo;
 use function spl_object_id;
 
 class PlayerSession
@@ -77,6 +78,10 @@ class PlayerSession
     public function getPlayer() : Player
     {
         return $this->player;
+    }
+
+    public function getInfo() : PlayerSessionInfo {
+        return new PlayerSessionInfo($this);
     }
 
     /**
