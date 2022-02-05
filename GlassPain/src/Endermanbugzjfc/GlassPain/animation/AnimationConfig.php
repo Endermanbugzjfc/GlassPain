@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
-use Endermanbugzjfc\GlassPain\GlassPain;
 use Endermanbugzjfc\GlassPain\Utils;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\item\ItemBlock;
@@ -14,7 +13,7 @@ use pocketmine\item\StringToItemParser;
 class AnimationConfig
 {
 
-    #[KeyName("display-name")]
+    #[KeyName("DisplayName")]
     public string $displayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
 
     /**
@@ -31,21 +30,21 @@ class AnimationConfig
     /**
      * @var array Key = option name.
      */
-    #[KeyName("default-option-values")]
+    #[KeyName("DefaultOptionValues")]
     public array $defaultOptionValues = [
     ];
 
     /**
      * @var string[]
      */
-    #[KeyName("triggering-blocks")]
+    #[KeyName("TriggeringBlocks")]
     public array $triggeringBlocks = [
     ];
 
-    #[KeyName("lock-options")]
+    #[KeyName("LockOptions")]
     public bool $lockOptions = false;
 
-    #[KeyName("lock-triggering-blocks")]
+    #[KeyName("LockTriggeringBlocks")]
     public bool $lockTriggeringBlocks = false;
 
     public function __construct()

@@ -11,12 +11,12 @@ use pocketmine\block\utils\DyeColor;
 class ConfigRoot
 {
 
-    #[KeyName("default-animation")] public ?AnimationConfig $defaultAnimation = null;
+    #[KeyName("DefaultAnimation")] public ?AnimationConfig $defaultAnimation = null;
 
-    #[KeyName("panel-form")]
+    #[KeyName("PanelForm")]
     public ConfigPanelForm $panelForm;
 
-    #[KeyName("overview-form")]
+    #[KeyName("OverviewForm")]
     public ConfigOverviewForm $overviewForm;
 
     public function __construct()
