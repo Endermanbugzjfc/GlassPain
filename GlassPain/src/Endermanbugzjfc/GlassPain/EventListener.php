@@ -11,6 +11,10 @@ use pocketmine\event\player\PlayerLoginEvent;
 class EventListener implements Listener
 {
 
+    public function __construct()
+    {
+    }
+
     public function onPlayerLoginEvent(PlayerLoginEvent $event) : void
     {
         PlayerSession::open($event->getPlayer());
