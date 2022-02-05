@@ -17,6 +17,8 @@ class ConfigRoot
 
     public ConfigOverviewForm $OverviewForm;
 
+    public bool $ShowPanelFormFirst = false;
+
     public function __construct()
     {
         $this->PanelForm = new ConfigPanelForm();
