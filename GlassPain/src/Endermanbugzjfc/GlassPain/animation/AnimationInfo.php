@@ -33,7 +33,7 @@ final class AnimationInfo extends Info
         InfoAPI::provideInfo(
             self::class,
             NumberInfo::class,
-            "GlassPain.Animation.PopularityCount",
+            "GlassPain.Animation.UsersCount",
             fn(self $info) => $info->getValue()->getUsersCount()
         );
     }
