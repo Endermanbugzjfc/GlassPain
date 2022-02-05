@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\GlassPain\player;
 
-use Endermanbugzjfc\GlassPain\GlassPain;
 use SOFe\InfoAPI\Info;
 use SOFe\InfoAPI\InfoAPI;
 use SOFe\InfoAPI\NumberInfo;
 use SOFe\InfoAPI\PlayerInfo;
-use SOFe\InfoAPI\RatioInfo;
-use SOFe\InfoAPI\StringInfo;
+use function count;
 
 final class PlayerSessionInfo extends Info
 {
@@ -29,7 +27,14 @@ final class PlayerSessionInfo extends Info
 
     public static function init() : void
     {
-
+        InfoAPI::provideInfo(
+            self::class,
+            NumberInfo::class,
+            "GlassPain.Player.OwnedAnimationsCount",
+            fn(self $info) : NumberInfo => new NumberInfo(
+                count($info->getValue()->getAnimations())
+            )
+        );
     }
 
     /**
