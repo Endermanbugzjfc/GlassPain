@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\GlassPain\animation;
 
-abstract class InstantAnimation extends AnimationBase
+abstract class InstantAnimationBase extends AnimationBase
 {
 
     final protected function getMinimumPlayDuration() : float {

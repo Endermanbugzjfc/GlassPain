@@ -11,7 +11,7 @@ abstract class AnimationBase
 
     final public function getDefaultOptions() : array
     {
-        if (!$this instanceof InstantAnimation) {
+        if (!$this instanceof InstantAnimationBase) {
             $return["speed"] = 1.0;
         }
         return $return ?? [];
