@@ -15,7 +15,7 @@ use function spl_object_id;
 
 class PlayerSession
 {
-    use AnimationManagerTrait,
+    use AnimationUserTrait,
         CoroutineTrait,
         PlayerSessionManagerTrait;
 
