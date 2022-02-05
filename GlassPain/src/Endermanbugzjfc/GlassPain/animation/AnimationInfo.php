@@ -32,7 +32,7 @@ final class AnimationInfo extends Info
         InfoAPI::provideInfo(
             self::class,
             StringInfo::class,
-            "$glassPain.animation.displayName",
+            "$glassPain.animation.DisplayName",
             fn(self $info) => $info->getValue()->DisplayName
         );
     }
