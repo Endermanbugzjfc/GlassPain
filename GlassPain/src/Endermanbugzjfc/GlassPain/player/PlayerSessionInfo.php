@@ -35,10 +35,9 @@ final class PlayerSessionInfo extends Info
                 count($info->getValue()->getAnimations())
             )
         );
-        InfoAPI::provideInfo(
+        InfoAPI::provideFallback(
             self::class,
             PlayerInfo::class,
-            "GlassPain.Player.More",
             fn(self $info) : PlayerInfo => new PlayerInfo(
                 $this->getValue()->getPlayer()
             )
