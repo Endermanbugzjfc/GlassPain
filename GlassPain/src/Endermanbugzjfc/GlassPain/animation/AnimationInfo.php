@@ -28,13 +28,17 @@ final class AnimationInfo extends Info
             self::class,
             StringInfo::class,
             "GlassPain.Animation.DisplayName",
-            fn(self $info) => $info->getValue()->getConfig()->DisplayName
+            fn(self $info) : StringInfo => new StringInfo(
+                $info->getValue()->getConfig()->DisplayName
+            )
         );
         InfoAPI::provideInfo(
             self::class,
             NumberInfo::class,
             "GlassPain.Animation.UsersCount",
-            fn(self $info) => $info->getValue()->getUsersCount()
+            fn(self $info) : NumberInfo => new NumberInfo(
+                $info->getValue()->getUsersCount()
+            )
         );
     }
 
