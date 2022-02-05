@@ -12,7 +12,9 @@ use pocketmine\utils\Config;
 use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
 use SOFe\AwaitStd\AwaitStd;
+use function array_diff;
 use function file_exists;
+use function scandir;
 use function yaml_emit_file;
 use function yaml_parse_file;
 
@@ -24,6 +26,11 @@ class GlassPain extends PluginBase
     public ConfigRoot $config;
 
     protected DataConnector $dataConnector;
+
+    /**
+     * @var int Player count of this server no matter online or offline.
+     */
+    protected int $totalPlayersCount;
 
     protected function onEnable() : void
     {
@@ -38,8 +45,14 @@ class GlassPain extends PluginBase
                 yaml_parse_file($path)
             );
         }
+        $this->totalPlayersCount = count(array_diff(
+            scandir($this->getServer()->getDataPath() . "players/"),
+            [".", ".."]
+        ));
         $this->getServer()->getPluginManager()->registerEvents(
-            new EventListener(),
+            new EventListener(
+                fn() => $this->totalPlayersCount++
+            ),
             $this
         );
         $this->std = AwaitStd::init($this);
@@ -71,6 +84,14 @@ class GlassPain extends PluginBase
     public function getDataConnector() : DataConnector
     {
         return $this->dataConnector;
+    }
+
+    /**
+     * @var int Player count of this server no matter online or offline.
+     */
+    public function getTotalPlayersCount() : int
+    {
+        return $this->totalPlayersCount;
     }
 
     protected function onLoad() : void
