@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\GlassPain\config;
 
-use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\GlassPain\animation\AnimationConfig;
-use pocketmine\block\utils\DyeColor;
+use Endermanbugzjfc\GlassPain\config\forms\ConfigOverviewForm;
+use Endermanbugzjfc\GlassPain\config\forms\ConfigPanelForm;
 
 class ConfigRoot
 {
