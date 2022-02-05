@@ -13,39 +13,36 @@ use pocketmine\item\StringToItemParser;
 class AnimationConfig
 {
 
-    #[KeyName("DisplayName")]
-    public string $displayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
+    public string $DisplayName = "formatting reference https://sof3.github.io/InfoAPI/defaults#format";
 
     /**
      * @var string
      * @phpstan-param class-string<AnimationInterface>
      */
-    public string $class = "please refer to the information provided by your animation plugin";
+    public string $Class = "please refer to the information provided by your animation plugin";
 
     /**
      * @var string Permission to own and apply this animation.
      */
-    public string $permission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
+    public string $Permission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
 
     /**
      * @var array Key = option name.
      */
-    #[KeyName("DefaultOptionValues")]
-    public array $defaultOptionValues = [
+    public array $DefaultOptionValues = [
     ];
 
     /**
      * @var string[]
      */
-    #[KeyName("TriggeringBlocks")]
-    public array $triggeringBlocks = [
+    public array $TriggeringBlocks = [
     ];
 
     #[KeyName("LockOptions")]
-    public bool $lockOptions = false;
+    public bool $LockOptions = false;
 
     #[KeyName("LockTriggeringBlocks")]
-    public bool $lockTriggeringBlocks = false;
+    public bool $LockTriggeringBlocks = false;
 
     public function __construct()
     {
@@ -61,7 +58,7 @@ class AnimationConfig
             }
         }
         $blocks[] = "iron_bars";
-        $this->triggeringBlocks = $blocks;
+        $this->TriggeringBlocks = $blocks;
     }
 
     /**
@@ -69,7 +66,7 @@ class AnimationConfig
      */
     public function parseTriggeringBlockIds() : array
     {
-        foreach ($this->triggeringBlocks as $block) {
+        foreach ($this->TriggeringBlocks as $block) {
             $return[$block] = StringToItemParser::getInstance()->parse(
                 $block
             );

@@ -7,9 +7,9 @@ namespace Endermanbugzjfc\GlassPain\config;
 class ConfigPanelForm
 {
 
-    public string $title = "{bold}{darkBlue}Glass{gold}Pain";
+    public string $Title = "{bold}{darkBlue}Glass{gold}Pain";
 
-    public string $content = <<<EOT
+    public string $Content = <<<EOT
     {yellow}Selected animation: {white}{animation.displayName}
     EOT;
 

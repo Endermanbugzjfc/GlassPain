@@ -23,7 +23,7 @@ final class AnimationInfo extends Info
 
     public function toString() : string
     {
-        return $this->getValue()->displayName;
+        return $this->getValue()->DisplayName;
     }
 
     public static function init() : void
@@ -33,7 +33,7 @@ final class AnimationInfo extends Info
             self::class,
             StringInfo::class,
             "$glassPain.animation.displayName",
-            fn(self $info) => $info->getValue()->displayName
+            fn(self $info) => $info->getValue()->DisplayName
         );
     }
 

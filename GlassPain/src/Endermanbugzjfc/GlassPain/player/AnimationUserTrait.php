@@ -45,7 +45,7 @@ trait AnimationUserTrait
         return $this->triggeringBlocks ?? (GlassPain
                     ::getInstance()
                     ->config
-                    ->defaultAnimation
+                    ->DefaultAnimation
                     ?->parseTriggeringBlockIds()
                 ?? []
             );
