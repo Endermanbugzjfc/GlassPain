@@ -17,6 +17,9 @@ abstract class AnimationBase
         return $return ?? [];
     }
 
+    final public function getUsersCount() : int {
+    }
+
     public function getConfig() : AnimationConfig
     {
     }
