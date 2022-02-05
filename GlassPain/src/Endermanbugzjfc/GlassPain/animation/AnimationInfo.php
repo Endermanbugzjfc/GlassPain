@@ -6,6 +6,7 @@ namespace Endermanbugzjfc\GlassPain\animation;
 
 use SOFe\InfoAPI\Info;
 use SOFe\InfoAPI\InfoAPI;
+use SOFe\InfoAPI\NumberInfo;
 use SOFe\InfoAPI\StringInfo;
 
 final class AnimationInfo extends Info
@@ -28,6 +29,12 @@ final class AnimationInfo extends Info
             StringInfo::class,
             "GlassPain.Animation.DisplayName",
             fn(self $info) => $info->getValue()->getConfig()->DisplayName
+        );
+        InfoAPI::provideInfo(
+            self::class,
+            NumberInfo::class,
+            "GlassPain.Animation.PopularityCount",
+            fn(self $info) => $info->getValue()->getUsersCount()
         );
     }
 
