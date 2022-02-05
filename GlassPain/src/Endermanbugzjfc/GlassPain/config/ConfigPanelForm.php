@@ -8,7 +8,7 @@ class ConfigPanelForm extends ConfigForm
 {
 
     public string $Content = <<<EOT
-    {yellow}Selected animation: {white}{animation.displayName}
+    {YELLOW}Selected animation: {WHITE}{Animation DisplayName}
     EOT;
 
 }
