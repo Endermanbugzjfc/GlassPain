@@ -19,7 +19,7 @@ class ConfigOverviewForm extends ConfigForm
     public string $AnimationEntryText = <<<EOT
     {BOLD}{DARKBLUE}{Animation DisplayName}
     {BLUE}{Animation PopularityCount} players are using
-    EOT;
+    EOT; // TODO: Popularity info
 
 
 
