@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\GlassPain\animation;
 
 abstract class InstantAnimation extends AnimationBase

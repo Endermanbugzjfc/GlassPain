@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\GlassPain\animation;
 
 abstract class AnimationBase
@@ -14,11 +16,13 @@ abstract class AnimationBase
         }
         return $return ?? [];
     }
-    
-    public function getConfig() : AnimationConfig {
+
+    public function getConfig() : AnimationConfig
+    {
     }
 
-    public function getInfo() : AnimationInfo {
+    public function getInfo() : AnimationInfo
+    {
 
     }
 
