@@ -16,6 +16,9 @@ class ConfigRoot
     #[KeyName("panel-form")]
     public ConfigPanelForm $panelForm;
 
+    #[KeyName("overview-form")]
+    public ConfigOverviewForm $overviewForm;
+
     public function __construct()
     {
         $this->panelForm = new ConfigPanelForm();
