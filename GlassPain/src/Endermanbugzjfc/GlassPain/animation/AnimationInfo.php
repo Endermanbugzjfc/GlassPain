@@ -11,14 +11,14 @@ use SOFe\InfoAPI\StringInfo;
 final class AnimationInfo extends Info
 {
     public function __construct(
-        protected AnimationConfig $value
+        protected AnimationBase $value
     )
     {
     }
 
     public function toString() : string
     {
-        return $this->getValue()->DisplayName;
+        return $this->getValue()->getConfig()->DisplayName;
     }
 
     public static function init() : void
@@ -27,14 +27,14 @@ final class AnimationInfo extends Info
             self::class,
             StringInfo::class,
             "GlassPain.Animation.DisplayName",
-            fn(self $info) => $info->getValue()->DisplayName
+            fn(self $info) => $info->getValue()->getConfig()->DisplayName
         );
     }
 
     /**
-     * @return AnimationConfig
+     * @return AnimationBase
      */
-    public function getValue() : AnimationConfig
+    public function getValue() : AnimationBase
     {
         return $this->value;
     }
