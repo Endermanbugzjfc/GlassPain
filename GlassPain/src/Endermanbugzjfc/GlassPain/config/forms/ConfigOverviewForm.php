@@ -11,6 +11,14 @@ class ConfigOverviewForm extends ConfigForm
     {YELLOW}You owns {Player OwnedAnimationsCount} animations.
     EOT;
 
+    public ?string $AdvancedButtonIcon = ""; // TODO
+
+    public string $AdvancedButtonText = <<<EOT
+    {BOLD}{DARKBLUE}Advanced
+    {BLUE}(Search bar)
+    EOT;
+
+
     public ?string $AnimationEntryIcon = <<<EOT
     {Animation Icon}
     EOT; // TODO: Null icon
