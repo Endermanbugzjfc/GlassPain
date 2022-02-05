@@ -9,10 +9,10 @@ class FormSession
         protected PlayerSession $playerSession
     )
     {
-        $this->controlPanelForm();
+        $this->overviewForm();
     }
 
-    protected function controlPanelForm() : void
+    protected function overviewForm() : void
     {
     }
 
