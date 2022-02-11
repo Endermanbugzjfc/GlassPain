@@ -9,6 +9,9 @@ use Generator;
 use SOFe\AwaitStd\Await;
 use SOFe\InfoAPI\InfoAPI;
 use Vecnavium\FormsUI\CustomForm;
+use function explode;
+use function str_contains;
+use function trim;
 
 class FormSession
 {
@@ -20,10 +23,19 @@ class FormSession
         $this->panelForm();
     }
 
+    protected ?string $search = null;
+
     protected function panelForm() : Generator
     {
-        $this->sendPanelForm(yield Await::RESOLVE);
-        $data = yield from Await::ONCE;
+        while (true) {
+            $this->sendPanelForm(yield Await::RESOLVE);
+            $data = yield from Await::ONCE;
+            $animationName = $data["AnimationDropdown"];
+            if ($data["AnimationSearchBar"] !== $animationName) {
+                $this->search = $animationName;
+                continue;
+            }
+        }
     }
 
     protected function sendPanelForm(callable $callback) : void
@@ -41,7 +53,10 @@ class FormSession
             $this->getPlayerSession()->getAvailableAnimations()
             as $index => $animation
         ) {
-            $animations[] = $animation->getConfig()->parseDisplayName();
+            $animationName = $animation->getConfig()->parseDisplayName();
+            if ($this->animationShouldDisplayInDropdown($animationName)) {
+                $animations[] = $animationName;
+            }
             if ($animation === $animationDefault) {
                 $animationDefaultIndex = $index;
             }
@@ -57,7 +72,30 @@ class FormSession
             $config->AnimationSearchBarPlaceholder,
             $info
         ), $animationDefault->getConfig()->DisplayName, "AnimationSearchBar");
+
         $this->getPlayerSession()->getPlayer()->sendForm($form);
+        $this->resetParameters();
+    }
+
+    protected function animationShouldDisplayInDropdown(
+        string $animationName
+    ) : bool
+    {
+        if ($this->search === null) {
+            return true;
+        }
+        $keywords = explode(" ", trim($this->search));
+        foreach ($keywords as $keyword) {
+            if (str_contains($animationName, $keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function resetParameters() : void
+    {
+        $this->search = null;
     }
 
     /**
