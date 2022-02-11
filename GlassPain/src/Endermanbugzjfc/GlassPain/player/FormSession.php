@@ -58,6 +58,17 @@ class FormSession
                 $this->search = null;
                 continue;
             }
+
+            $toggle = $data["Toggle"];
+            if ($this->getPlayerSession()->getAnimation() === $animation) {
+                if (!$toggle) {
+                    $this->getPlayerSession()->setAnimation(null);
+                }
+            } else {
+                if ($toggle) {
+                    $this->getPlayerSession()->setAnimation($animation);
+                }
+            }
         }
     }
 
@@ -104,6 +115,16 @@ class FormSession
         }
 
         if ($this->animation !== null) {
+            $enabled = $this
+                    ->animation === $this
+                    ->getPlayerSession()
+                    ->getAnimation();
+            $form->addToggle(InfoAPI::resolve(
+                $enabled
+                    ? $config->ToggleLabelEnabled
+                    : $config->ToggleLabelDisabled,
+                $info
+            ), $enabled, "Toggle");
         }
 
         $this->getPlayerSession()->getPlayer()->sendForm($form);

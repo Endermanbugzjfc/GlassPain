@@ -12,6 +12,11 @@ use pocketmine\item\ItemBlock;
 trait AnimationUserTrait
 {
 
+    public function setAnimation(?AnimationBase $animation)
+    {
+
+    }
+
     /**
      * @return AnimationBase[]
      */
