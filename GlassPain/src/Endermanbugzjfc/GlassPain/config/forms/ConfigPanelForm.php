@@ -11,6 +11,10 @@ class ConfigPanelForm extends ConfigForm
     {BOLD}{RED}You haven't own any animations!
     EOT;
 
+    public string $ErrorNoSearchResult = <<<EOT
+    {BOLD}{RED}You don't own any animations named "{input}"
+    EOT;
+
     public string $AnimationDropdownLabel = <<<EOT
     {BOLD}{GOLD}Animation: 
     EOT;
