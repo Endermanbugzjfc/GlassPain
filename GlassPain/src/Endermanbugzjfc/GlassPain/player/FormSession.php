@@ -39,6 +39,9 @@ class FormSession
         while (true) {
             $this->sendPanelForm(yield Await::RESOLVE);
             $data = yield from Await::ONCE;
+            if ($data === null) {
+                break;
+            }
             $animationDropdown = $data["AnimationDropdown"];
             $animation = $this->animations[$animationDropdown];
             if ($this->animation !== $animation) {
