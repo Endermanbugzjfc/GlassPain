@@ -9,6 +9,8 @@ use Endermanbugzjfc\GlassPain\Utils;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\item\ItemBlock;
 use pocketmine\item\StringToItemParser;
+use SOFe\InfoAPI\FormatInfo;
+use SOFe\InfoAPI\InfoAPI;
 
 class AnimationConfig
 {
@@ -72,6 +74,13 @@ class AnimationConfig
             );
         }
         return $return ?? [];
+    }
+
+    public function parseDisplayName() : string {
+        return InfoAPI::resolve(
+            $this->DisplayName,
+            new FormatInfo()
+        );
     }
 
 }
