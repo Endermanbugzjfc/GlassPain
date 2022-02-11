@@ -11,4 +11,16 @@ class ConfigPanelForm extends ConfigForm
     {YELLOW}Selected animation: {WHITE}{Animation DisplayName}
     EOT;
 
+    public string $AnimationDropdownLabel = <<<EOT
+    {BOLD}{GOLD}Animation: 
+    EOT;
+
+    public string $AnimationSearchBarLabel = <<<EOT
+    {AQUA}Search:
+    EOT;
+
+    public string $AnimationSearchBarPlaceholder = <<<EOT
+    
+    EOT;
+
 }
