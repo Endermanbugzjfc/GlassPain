@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\GlassPain\player;
 
+use Endermanbugzjfc\GlassPain\animation\AnimationBase;
 use Endermanbugzjfc\GlassPain\GlassPain;
 use Generator;
 use SOFe\AwaitStd\Await;
 use SOFe\InfoAPI\InfoAPI;
 use Vecnavium\FormsUI\CustomForm;
+use function count;
 use function explode;
 use function str_contains;
 use function trim;
@@ -25,14 +27,34 @@ class FormSession
 
     protected ?string $search = null;
 
+    /**
+     * @var AnimationBase[]
+     */
+    protected array $animations;
+
+    protected ?AnimationBase $animation = null;
+
     protected function panelForm() : Generator
     {
         while (true) {
             $this->sendPanelForm(yield Await::RESOLVE);
             $data = yield from Await::ONCE;
-            $animationName = $data["AnimationDropdown"];
-            if ($data["AnimationSearchBar"] !== $animationName) {
-                $this->search = $animationName;
+            $animationDropdown = $data["AnimationDropdown"];
+            $animation = $this->animations[$animationDropdown];
+            if ($this->animation !== $animation) {
+                if ($this->search === null) {
+                    if ($animationDropdown !== 0) {
+                        $this->animation = $animation;
+                        continue;
+                    }
+                    $animationName = $animation->getConfig()->parseDisplayName();
+                    if ($data["AnimationSearchBar"] !== $animationName) {
+                        $this->search = $animationName;
+                        continue;
+                    }
+                }
+                $this->animation = $animation;
+                $this->search = null;
                 continue;
             }
         }
@@ -47,15 +69,16 @@ class FormSession
             $config->Title,
             $info
         ));
-        $animationDefault = $this->animationDefault
-            ??= $this->getPlayerSession()->getAnimation();
+        $animationDefault = $this->animation
+            ?? $this->getPlayerSession()->getAnimation();
         foreach (
             $this->getPlayerSession()->getAvailableAnimations()
             as $index => $animation
         ) {
             $animationName = $animation->getConfig()->parseDisplayName();
             if ($this->animationShouldDisplayInDropdown($animationName)) {
-                $animations[] = $animationName;
+                $this->animations[] = $animation;
+                $animationNames[] = $animationName;
             }
             if ($animation === $animationDefault) {
                 $animationDefaultIndex = $index;
@@ -64,7 +87,7 @@ class FormSession
         $form->addDropdown(InfoAPI::resolve(
             $config->AnimationDropdownLabel,
             $info
-        ), $animations ?? [], $animationDefaultIndex ?? null, "AnimationDropdown");
+        ), $animationNames ?? [], $animationDefaultIndex ?? null, "AnimationDropdown");
         $form->addInput(InfoAPI::resolve(
             $config->AnimationSearchBarLabel,
             $info
@@ -73,8 +96,16 @@ class FormSession
             $info
         ), $animationDefault->getConfig()->DisplayName, "AnimationSearchBar");
 
+        if (count($this->animations ?? []) === 1) {
+            $this->animation = isset($animationDefaultIndex)
+                ? $animationDefault
+                : $this->animations[0] ?? null;
+        }
+
+        if ($this->animation !== null) {
+        }
+
         $this->getPlayerSession()->getPlayer()->sendForm($form);
-        $this->resetParameters();
     }
 
     protected function animationShouldDisplayInDropdown(
@@ -91,11 +122,6 @@ class FormSession
             }
         }
         return false;
-    }
-
-    public function resetParameters() : void
-    {
-        $this->search = null;
     }
 
     /**
