@@ -7,10 +7,6 @@ namespace Endermanbugzjfc\GlassPain\config\forms;
 class ConfigPanelForm extends ConfigForm
 {
 
-    public string $Content = <<<EOT
-    {YELLOW}Selected animation: {WHITE}{Animation DisplayName}
-    EOT;
-
     public string $AnimationDropdownLabel = <<<EOT
     {BOLD}{GOLD}Animation: 
     EOT;
