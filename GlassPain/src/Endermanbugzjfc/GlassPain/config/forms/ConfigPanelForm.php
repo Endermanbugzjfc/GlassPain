@@ -7,6 +7,10 @@ namespace Endermanbugzjfc\GlassPain\config\forms;
 class ConfigPanelForm extends ConfigForm
 {
 
+    public string $ErrorNoAnimations = <<<EOT
+    {BOLD}{RED}You haven't own any animations!
+    EOT;
+
     public string $AnimationDropdownLabel = <<<EOT
     {BOLD}{GOLD}Animation: 
     EOT;
