@@ -23,4 +23,13 @@ class ConfigPanelForm extends ConfigForm
     
     EOT;
 
+    public string $ToggleLabelDisabled = <<<EOT
+    {BOLD}{RED}Disabled
+    EOT;
+
+    public string $ToggleLabelEnabled = <<<EOT
+    {BOLD}{GREEN}Enabled
+    EOT;
+
+
 }
