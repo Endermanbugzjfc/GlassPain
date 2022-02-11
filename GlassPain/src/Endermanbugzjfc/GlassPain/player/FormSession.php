@@ -46,14 +46,12 @@ class FormSession
             $animation = $this->animations[$animationDropdown];
             if ($this->animation !== $animation) {
                 if ($this->search === null) {
-                    if ($animationDropdown !== 0) {
-                        $this->animation = $animation;
-                        continue;
-                    }
-                    $animationName = $animation->getConfig()->parseDisplayName();
-                    if ($data["AnimationSearchBar"] !== $animationName) {
-                        $this->search = $animationName;
-                        continue;
+                    if ($animationDropdown === 0) {
+                        $animationName = $animation->getConfig()->parseDisplayName();
+                        if ($data["AnimationSearchBar"] !== $animationName) {
+                            $this->search = $animationName;
+                            continue;
+                        }
                     }
                 }
                 $this->animation = $animation;
