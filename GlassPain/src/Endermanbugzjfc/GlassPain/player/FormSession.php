@@ -49,14 +49,14 @@ class FormSession
         $form->addDropdown(InfoAPI::resolve(
             $config->AnimationDropdownLabel,
             $info
-        ), $animations ?? [], $animationDefaultIndex ?? null);
+        ), $animations ?? [], $animationDefaultIndex ?? null, "AnimationDropdown");
         $form->addInput(InfoAPI::resolve(
             $config->AnimationSearchBarLabel,
             $info
         ), InfoAPI::resolve(
             $config->AnimationSearchBarPlaceholder,
             $info
-        ), $animationDefault->getConfig()->DisplayName);
+        ), $animationDefault->getConfig()->DisplayName, "AnimationSearchBar");
         $this->getPlayerSession()->getPlayer()->sendForm($form);
     }
 
