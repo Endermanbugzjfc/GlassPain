@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Endermanbugzjfc\GlassPain;
+namespace Endermanbugzjfc\GlassPain\utils;
 
-class Utils
+class UncommonWords
 {
 
     public const LOWERCASE_PLUGIN_NAME = "glasspain";

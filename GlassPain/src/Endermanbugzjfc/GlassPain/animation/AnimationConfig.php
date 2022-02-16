@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\GlassPain\animation;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
-use Endermanbugzjfc\GlassPain\Utils;
+use Endermanbugzjfc\GlassPain\utils\UncommonWords;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\item\ItemBlock;
 use pocketmine\item\StringToItemParser;
@@ -26,7 +26,7 @@ class AnimationConfig
     /**
      * @var string Permission to own and apply this animation.
      */
-    public string $Permission = Utils::LOWERCASE_PLUGIN_NAME . ".animation.";
+    public string $Permission = UncommonWords::LOWERCASE_PLUGIN_NAME . ".animation.";
 
     /**
      * @var array Key = option name.
