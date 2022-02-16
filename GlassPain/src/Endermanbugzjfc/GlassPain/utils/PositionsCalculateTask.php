@@ -57,12 +57,19 @@ class PositionsCalculateTask extends AsyncTask
         );
     }
 
+    /**
+     * @param Vector2 $initiatePosition
+     * @param int $fixed
+     * @param bool $rotateNinety
+     * @param Chunk $chunk
+     * @return Vector2|null Lol, abuse of Vector2.
+     */
     protected static function hasBothYStops(
         Vector2 $initiatePosition,
         int     $fixed,
         bool    $rotateNinety,
         Chunk   $chunk
-    ) : bool
+    ) : ?Vector2
     {
         for (
             $upright = $initiatePosition->getFloorY();
@@ -81,7 +88,7 @@ class PositionsCalculateTask extends AsyncTask
             }
         }
         if ($noUpright ?? true) {
-            return false;
+            return null;
         }
 
         for ($upSideDown = $initiatePosition->getFloorY() - 1;
@@ -100,9 +107,12 @@ class PositionsCalculateTask extends AsyncTask
             }
         }
         if ($noUpsideDown ?? true) {
-            return false;
+            return null;
         }
-        return true;
+        return new Vector2(
+            $upright,
+            $upSideDown
+        );
     }
 
     protected static function isYStop(
