@@ -24,3 +24,11 @@ ORDER BY last_enable DESC
 -- #        {
 -- #    }
 -- #}
+-- #{ animation
+-- #    { get_users_count
+-- #      :animation string
+SELECT count(uuid)
+FROM glass_pain_player_animation_config
+WHERE animation = :animation;
+-- #    {
+-- #}
