@@ -9,6 +9,7 @@ use pocketmine\math\Vector2;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\world\format\Chunk;
 use pocketmine\world\format\io\FastChunkSerializer;
+use pocketmine\world\World;
 
 class PositionsCalculateTask extends AsyncTask
 {
@@ -47,6 +48,61 @@ class PositionsCalculateTask extends AsyncTask
             $this->rotateNinety,
             $this->chunkSerialized
         );
+
+        self::hasBothYStops(
+            $initiatePosition,
+            $fixed,
+            $rotateNinety,
+            $chunk
+        );
+    }
+
+    protected static function hasBothYStops(
+        Vector2 $initiatePosition,
+        int     $fixed,
+        bool    $rotateNinety,
+        Chunk   $chunk
+    ) : bool
+    {
+        for (
+            $upright = $initiatePosition->getFloorY();
+            $upright < World::Y_MAX;
+            $upright++
+        ) {
+            if (self::isYStop(
+                $initiatePosition->getFloorX(),
+                $upright,
+                $fixed,
+                $rotateNinety,
+                $chunk
+            )) {
+                $noUpright = false;
+                break;
+            }
+        }
+        if ($noUpright ?? true) {
+            return false;
+        }
+
+        for ($upSideDown = $initiatePosition->getFloorY() - 1;
+             $upSideDown < World::Y_MIN;
+             $upSideDown--
+        ) {
+            if (self::isYStop(
+                $initiatePosition->getFloorX(),
+                $upSideDown,
+                $fixed,
+                $rotateNinety,
+                $chunk
+            )) {
+                $noUpsideDown = false;
+                break;
+            }
+        }
+        if ($noUpsideDown ?? true) {
+            return false;
+        }
+        return true;
     }
 
     protected static function isYStop(
