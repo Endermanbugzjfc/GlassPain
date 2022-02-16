@@ -14,7 +14,6 @@ use pocketmine\world\World;
 class PositionsCalculateTask extends AsyncTask
 {
 
-
     protected string $chunkSerialized;
 
     public function __construct(
@@ -22,6 +21,8 @@ class PositionsCalculateTask extends AsyncTask
         protected int  $initiateY,
         protected int  $fixed,
         protected bool $rotateNinety,
+        protected ?int  $uprightYStop,
+        protected ?int  $upSideDownYStop,
         Chunk          $chunk
     )
     {
@@ -41,20 +42,31 @@ class PositionsCalculateTask extends AsyncTask
         $chunk = FastChunkSerializer::deserializeTerrain(
             $this->chunkSerialized
         );
+        $uprightYStop = $this->uprightYStop;
+        $upSideDownYStop = $this->upSideDownYStop;
         unset(
             $this->initiateX,
             $this->initiateY,
             $this->fixed,
             $this->rotateNinety,
-            $this->chunkSerialized
+            $this->chunkSerialized,
+            $this->uprightYStop,
+            $this->upSideDownYStop
         );
 
-        self::hasBothYStops(
-            $initiatePosition,
-            $fixed,
-            $rotateNinety,
-            $chunk
-        );
+        if ($uprightYStop === null or $upSideDownYStop === null) {
+            $yStop = self::hasBothYStops(
+                $initiatePosition,
+                $fixed,
+                $rotateNinety,
+                $chunk
+            );
+            /** @noinspection PhpSuspiciousNameCombinationInspection */
+            $uprightYStop = $yStop->getFloorX();
+            $upSideDownYStop = $yStop->getFloorY();
+        }
+
+        $this->setResult([$uprightYStop, $upSideDownYStop]);
     }
 
     /**
