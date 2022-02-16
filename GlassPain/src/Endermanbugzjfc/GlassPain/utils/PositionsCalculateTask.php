@@ -49,4 +49,24 @@ class PositionsCalculateTask extends AsyncTask
         );
     }
 
+    protected static function isYStop(
+        int   $initiateX,
+        int   $y,
+        int   $fixed,
+        bool  $rotateNinety,
+        Chunk $chunk
+    ) : bool
+    {
+        for ($x = $initiateX; $x < 16; $x++) {
+            if ($chunk->getFullBlock(
+                    !$rotateNinety ? $x : $fixed,
+                    $y,
+                    $rotateNinety ? $x : $fixed
+                ) === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
