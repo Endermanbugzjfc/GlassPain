@@ -1,0 +1,23 @@
+{
+  "name": "endermanbugzjfc/glasspain",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "pocketmine/pocketmine-mp": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Endermanbugzjfc\\GlassPain\\": [
+        "GlassPain/src"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Endermanbugzjfc\\GlassPain\\": [
+        "tests/",
+        "tools/"
+      ]
+    }
+  }
+}
