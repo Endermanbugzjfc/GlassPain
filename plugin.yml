@@ -1,0 +1,10 @@
+name: GlassPain
+description: Getting bent out of shape for glass pane block's small hitbox?
+author: Endermanbugzjfc
+api: 5.0.0
+version: 0.1.0
+main: Endermanbugzjfc\GlassPain\Main
+
+permissions:
+  glasspain.use:
+    default: true

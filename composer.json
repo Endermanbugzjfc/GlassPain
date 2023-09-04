@@ -1,0 +1,11 @@
+{
+    "require-dev": {
+        "sof3/pharynx": "^0.3.6"
+    },
+    "require": {
+        "pocketmine/pocketmine-mp": "5.0.0"
+    },
+    "autoload": {
+        "classmap": ["src"]
+    }
+}
