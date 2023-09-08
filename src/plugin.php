@@ -28,7 +28,7 @@ use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\scheduler\ClosureTask;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\World;
 use pocketmine\world\format\Chunk;
 
@@ -46,8 +46,22 @@ final class Main extends PluginBase implements Listener {
         }
 
         $pluginManager->registerEvents($this, $this);
-        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask($this->validatePlayersPosTask(...)), 20);
         $this->blockTranslator = (new TypeConverter)->getBlockTranslator();
+
+        foreach ($this->getResources() as $path => $file) {
+            if (!str_starts_with($path, "translations/")) continue;
+            $fileObject = $file->openFile();
+            $raw = $fileObject->fread($file->getSize());
+            unset($fileObject);
+
+            $entries = yaml_parse($raw);
+            foreach ($entries["codes"] as $code) {
+                $this->messages[$code] = new Messages(
+                    blocksReplaced: TextFormat::colorize($entries["blocks-replaced"]),
+                    tooClose: TextFormat::colorize($entries["too-close"]),
+                );
+            }
+        }
     }
 
     private function isTrackingPlayer(Player $player) : bool {
@@ -68,19 +82,59 @@ final class Main extends PluginBase implements Listener {
             $player = $event->getPlayer();
             $this->playerHelds[$player->getId()] = $event;
             yield from Zleep::sleepTicks($this, 5);
+            if (!$player->isConnected()) return;
             if (($this->playerHelds[$player->getId()] ?? null) !== $event) return;
             unset($this->playerHelds[$player->getId()]);
-
-            $item = $event->getItem();
-            $this->updateSight(
-                $player,
-                createSight: $this->isTrackingPlayer($player) && $item instanceof ItemBlock && !$item->equals(VanillaItems::AIR())
-            );
-            
+            $this->lazyPlayerItemHeld($event);
         });
     }
 
+    public function lazyPlayerItemHeld(PlayerItemHeldEvent $event) : void {
+        $item = $event->getItem();
+        $player = $event->getPlayer();
+        $createSight = $this->isTrackingPlayer($player) && $item instanceof ItemBlock && !$item->equals(VanillaItems::AIR());
+        $this->updateSight(
+            $player,
+            createSight: $createSight,
+        );
+    }
+
+    /**
+     * @var array<int, Player> Key = player entity runtime ID.
+     */
+    private array $playerSightLocks = [];
+
     private function updateSight(Player $player, bool $createSight) : void {
+        $world = $player->getWorld();
+        if (!isset($this->playerSightLocks[$player->getId()])) {
+            $checksPos = [
+                $playerPos = $player->getPosition(),
+                $playerPos->up(),
+            ];
+            if (!$player->isFlying()) $checksPos[] = $playerPos->down();
+            foreach ($checksPos as $checkPos) {
+                if ($this->blockThinToThick($world->getBlock($checkPos)) !== null) {
+                    $this->playerSightLocks[$player->getId()] = $player;
+                    Await::f2c(function () use ($player) : \Generator {
+                        $show = true;
+                        $messages = $this->getMessages($player);
+                        while ($player->isConnected() && isset($this->playerSightLocks[$player->getId()])) {
+                            $player->sendTitle(
+                                title: TextFormat::RESET,
+                                subtitle: $show ? $messages->tooClose : "",
+                                fadeIn: 0,
+                                stay: 40,
+                                fadeOut: 0,
+                            );
+                            yield from Zleep::sleepTicks($this, 20);
+                            $show = !$show;
+                        }
+                    });
+                    return;
+                }
+            }
+        }
+        
         $newSight = [];
         if ($createSight) {
             $playerPos = $player->getPosition();
@@ -106,8 +160,7 @@ final class Main extends PluginBase implements Listener {
         $newHashes = array_keys($newSight);
         $oldHashes = array_keys($oldSight);
 
-        $world = $player->getWorld();
-        $packets = [];
+        $packets = $updatesPos = [];
         foreach (array_diff($oldHashes, $newHashes) as $hash) {
             $pos = $oldSight[$hash];
             $chunk = $world->getChunk(
@@ -124,16 +177,26 @@ final class Main extends PluginBase implements Listener {
                 UpdateBlockPacket::FLAG_NETWORK,
                 UpdateBlockPacket::DATA_LAYER_NORMAL,
             );
+            $updatesPos[] = $pos;
         }
 
+        $sent = false;
         foreach (array_diff($newHashes, $oldHashes) as $hash) {
             $pos = $newSight[$hash];
             $block = $world->getBlock($pos);
             $thick = $this->blockThinToThick($block);
             if ($thick === null) continue;
+            if (!$sent) {
+                $messages = $this->getMessages($player);
+                $player->sendPopup($messages->blocksReplaced);
+                $sent = true;
+            }
             $packets[] = $this->createFakeBlockPacket($pos, $thick);
+            $updatesPos[] = $pos;
         }
+
         $this->dispatchPackets($player, $packets);
+        unset($this->playerSightLocks[$player->getId()]);
     }
 
     private function createFakeBlockPacket(Vector3 $pos, Block $block) : ClientboundPacket {
@@ -176,6 +239,7 @@ final class Main extends PluginBase implements Listener {
             }
             if ($shouldUpdate) {
                 yield from Zleep::sleepTicks($this, 5);
+                if (!$player->isConnected()) return;
                 $sight = $this->playerSights[$player->getId()] ?? null;
                 if ($sight !== null) {
                     foreach ($hashes as $hash) unset($sight[$hash]);
@@ -200,19 +264,23 @@ final class Main extends PluginBase implements Listener {
      */
     public function onPlayerQuit(PlayerQuitEvent $event) : void {
         unset($this->playerSights[$event->getPlayer()->getId()]);
+        unset($this->playerSightLocks[$event->getPlayer()->getId()]);
     }
 
-    private function validatePlayersPosTask() : void {
-        foreach ($this->getServer()->getOnlinePlayers() as $player) {
-            $sight = $this->playerSights[$player->getId()] ?? [];
-            if ($sight === []) continue;
-            // TODO
-        }
+    private function getMessages(Player $player) : Messages {
+        return $this->messages[$player->getLocale()] ?? $this->messages["en_GB"];
     }
+
+    /**
+     * @var array<string, Messages> Key = locale code.
+     */
+    private array $messages = [];
 }
 
 class Messages {
     public function __construct(
+        public readonly string $blocksReplaced,
+        public readonly string $tooClose,
     ) {
     }
 }
