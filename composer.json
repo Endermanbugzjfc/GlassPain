@@ -3,7 +3,8 @@
         "sof3/pharynx": "^0.3.6"
     },
     "require": {
-        "pocketmine/pocketmine-mp": "5.0.0"
+        "pocketmine/pocketmine-mp": "5.0.0",
+        "sof3/zleep": "^0.1.0"
     },
     "autoload": {
         "classmap": ["src"]
