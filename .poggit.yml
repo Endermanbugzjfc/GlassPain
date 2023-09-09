@@ -1,0 +1,9 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Endermanbugzjfc/GlassPain
+build-by-default: true
+branches:
+- poggit/master
+projects:
+  GlassPain:
+    path: poggit_stage
+    icon: icon.png
+...
