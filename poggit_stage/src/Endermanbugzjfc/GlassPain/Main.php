@@ -250,17 +250,17 @@ final class Main extends API implements Listener {
     }
 
     protected function blockThinToThick(Block $block) : ?Block {
-        if ($block instanceof GlassPane) {
-            return VanillaBlocks::GLASS();
-        }
-        if ($block instanceof HardenedGlassPane) {
-            return VanillaBlocks::HARDENED_GLASS();
-        }
         if ($block instanceof StainedGlassPane) {
             return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
         }
         if ($block instanceof StainedHardenedGlassPane) {
             return VanillaBlocks::STAINED_HARDENED_GLASS()->setColor($block->getColor());
+        }
+        if ($block instanceof GlassPane) {
+            return VanillaBlocks::GLASS();
+        }
+        if ($block instanceof HardenedGlassPane) {
+            return VanillaBlocks::HARDENED_GLASS();
         }
         return null;
     }
