@@ -43,7 +43,7 @@ use function yaml_parse;
 
 final class Main extends API implements Listener {
     protected function onLoad() : void {
-        InternalStub::$instance = $this;
+        self::$instance = $this;
     }
 
     protected function onEnable() : void {
@@ -191,6 +191,9 @@ final class Main extends API implements Listener {
                 $pos->getFloorX() >> Chunk::COORD_BIT_SIZE,
                 $pos->getFloorZ() >> Chunk::COORD_BIT_SIZE,
             );
+            if ($chunk === null) {
+                continue;
+            }
             $packets[] = UpdateBlockPacket::create(
                 BlockPosition::fromVector3($pos),
                 $this->blockTranslator->internalIdToNetworkId($chunk->getBlockStateId(

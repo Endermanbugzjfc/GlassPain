@@ -11,6 +11,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
 
 abstract class API extends InternalStub {
+    protected static self $instance;
     public static function getInstance() : self {
         return self::$instance;
     }
@@ -18,7 +19,7 @@ abstract class API extends InternalStub {
     /**
      * For anticheats.
      */
-    public function getClientSideBlock(Player $player, Vector3 $pos) : Block {
+    public function getClientSideBlock(Player $player, Vector3 $pos) : ?Block {
         $hash = World::blockHash(
             $pos->getFloorX(),
             $pos->getFloorY(),
@@ -37,6 +38,5 @@ abstract class InternalStub extends PluginBase {
      * @var array<int, array<int, Vector3>> First key = the player entity runtime ID. Second key = the block hash.
      */
     protected array $playerSights = [];
-    protected static self $instance;
     abstract protected function blockThinToThick(Block $block) : ?Block;
 }
