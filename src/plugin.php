@@ -8,7 +8,9 @@ use SOFe\AwaitGenerator\Await;
 use SOFe\Zleep\Zleep;
 use pocketmine\block\Block;
 use pocketmine\block\GlassPane;
+use pocketmine\block\HardenedGlassPane;
 use pocketmine\block\StainedGlassPane;
+use pocketmine\block\StainedHardenedGlassPane;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -223,9 +225,11 @@ final class Main extends API implements Listener {
     }
 
     protected function blockThinToThick(Block $block) : ?Block {
-        if (!$block instanceof GlassPane) return null;
-        if (!$block instanceof StainedGlassPane) return VanillaBlocks::GLASS();
-        return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
+        if ($block instanceof GlassPane) return VanillaBlocks::GLASS();
+        if ($block instanceof HardenedGlassPane) return VanillaBlocks::HARDENED_GLASS();
+        if ($block instanceof StainedGlassPane) return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
+        if ($block instanceof StainedHardenedGlassPane) return VanillaBlocks::STAINED_HARDENED_GLASS()->setColor($block->getColor());
+        return null;
     }
 
     /**
