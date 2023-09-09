@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\GlassPain;
 
-use SOFe\AwaitGenerator\Await;
-use SOFe\Zleep\Zleep;
+use Generator;
 use pocketmine\block\Block;
 use pocketmine\block\GlassPane;
 use pocketmine\block\HardenedGlassPane;
 use pocketmine\block\StainedGlassPane;
 use pocketmine\block\StainedHardenedGlassPane;
 use pocketmine\block\VanillaBlocks;
-use pocketmine\event\Listener;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\ItemBlock;
@@ -26,12 +25,21 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\convert\BlockTranslator;
 use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\ClientboundPacket;
-use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
+use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use pocketmine\world\World;
 use pocketmine\world\format\Chunk;
+use pocketmine\world\World;
+use SOFe\AwaitGenerator\Await;
+use SOFe\Zleep\Zleep;
+use function array_diff;
+use function array_keys;
+use function class_exists;
+use function count;
+use function spl_object_id;
+use function str_starts_with;
+use function yaml_parse;
 
 final class Main extends API implements Listener {
     protected function onLoad() : void {
@@ -54,7 +62,9 @@ final class Main extends API implements Listener {
         $this->blockTranslator = (new TypeConverter)->getBlockTranslator();
 
         foreach ($this->getResources() as $path => $file) {
-            if (!str_starts_with($path, "translations/")) continue;
+            if (!str_starts_with($path, "translations/")) {
+                continue;
+            }
             $fileObject = $file->openFile();
             $raw = $fileObject->fread($file->getSize());
             unset($fileObject);
@@ -84,12 +94,16 @@ final class Main extends API implements Listener {
      * @priority MONITOR
      */
     public function onPlayerItemHeld(PlayerItemHeldEvent $event) : void {
-        Await::f2c(function () use ($event) : \Generator {
+        Await::f2c(function () use ($event) : Generator {
             $player = $event->getPlayer();
             $this->playerHelds[$player->getId()] = $event;
             yield from Zleep::sleepTicks($this, 5);
-            if (!$player->isConnected()) return;
-            if (($this->playerHelds[$player->getId()] ?? null) !== $event) return;
+            if (!$player->isConnected()) {
+                return;
+            }
+            if (($this->playerHelds[$player->getId()] ?? null) !== $event) {
+                return;
+            }
             unset($this->playerHelds[$player->getId()]);
             $this->lazyPlayerItemHeld($event);
         });
@@ -116,12 +130,16 @@ final class Main extends API implements Listener {
             $playerPos = $player->getPosition(),
             $playerPos->up(),
         ];
-        if (!$player->isFlying()) $checksPos[] = $playerPos->down();
+        if (!$player->isFlying()) {
+            $checksPos[] = $playerPos->down();
+        }
         foreach ($checksPos as $checkPos) {
             if ($this->blockThinToThick($world->getBlock($checkPos)) !== null) {
-                if (isset($this->playerSightLocks[$player->getId()])) return;
+                if (isset($this->playerSightLocks[$player->getId()])) {
+                    return;
+                }
                 $this->playerSightLocks[$player->getId()] = $player;
-                Await::f2c(function () use ($player) : \Generator {
+                Await::f2c(function () use ($player) : Generator {
                     $show = true;
                     $messages = $this->getMessages($player);
                     while ($player->isConnected() && isset($this->playerSightLocks[$player->getId()])) {
@@ -152,7 +170,7 @@ final class Main extends API implements Listener {
             $box->extend($facing, $maxReach);
             $box->stretch(Axis::Y, $lessReach);
             $box->stretch(Facing::axis(Facing::rotateY($facing, clockwise: true)), $lessReach);
-            
+
             for ($X = (int)$box->minX; $X <= $box->maxX; $X++) {
                 for ($Y = (int)$box->minY; $Y <= $box->maxY; $Y++) {
                     for ($Z = (int)$box->minZ; $Z <= $box->maxZ; $Z++) {
@@ -191,7 +209,9 @@ final class Main extends API implements Listener {
             $pos = $newSight[$hash];
             $block = $world->getBlock($pos);
             $thick = $this->blockThinToThick($block);
-            if ($thick === null) continue;
+            if ($thick === null) {
+                continue;
+            }
             if (!$sent) {
                 $messages = $this->getMessages($player);
                 $player->sendPopup($messages->blocksReplaced);
@@ -221,14 +241,24 @@ final class Main extends API implements Listener {
     private function dispatchPackets(Player $player, array $packets) : void {
         $connection = $player->getNetworkSession();
         $sendIndex = count($packets) - 1;
-        foreach ($packets as $index => $packet) $connection->sendDataPacket($packet, $index === $sendIndex);
+        foreach ($packets as $index => $packet) {
+            $connection->sendDataPacket($packet, $index === $sendIndex);
+        }
     }
 
     protected function blockThinToThick(Block $block) : ?Block {
-        if ($block instanceof GlassPane) return VanillaBlocks::GLASS();
-        if ($block instanceof HardenedGlassPane) return VanillaBlocks::HARDENED_GLASS();
-        if ($block instanceof StainedGlassPane) return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
-        if ($block instanceof StainedHardenedGlassPane) return VanillaBlocks::STAINED_HARDENED_GLASS()->setColor($block->getColor());
+        if ($block instanceof GlassPane) {
+            return VanillaBlocks::GLASS();
+        }
+        if ($block instanceof HardenedGlassPane) {
+            return VanillaBlocks::HARDENED_GLASS();
+        }
+        if ($block instanceof StainedGlassPane) {
+            return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
+        }
+        if ($block instanceof StainedHardenedGlassPane) {
+            return VanillaBlocks::STAINED_HARDENED_GLASS()->setColor($block->getColor());
+        }
         return null;
     }
 
@@ -236,21 +266,29 @@ final class Main extends API implements Listener {
      * @priority MONITOR
      */
     public function onBlockPlace(BlockPlaceEvent $event) : void {
-        Await::f2c(function () use ($event) : \Generator {
+        Await::f2c(function () use ($event) : Generator {
             $player = $event->getPlayer();
-            if (!$this->isTrackingPlayer($player)) return;
+            if (!$this->isTrackingPlayer($player)) {
+                return;
+            }
             $shouldUpdate = false;
             $hashes = [];
             foreach ($event->getTransaction()->getBlocks() as [$X, $Y, $Z, $block]) {
-                if (!$shouldUpdate && $this->blockThinToThick($block) !== null) $shouldUpdate = true;
+                if (!$shouldUpdate && $this->blockThinToThick($block) !== null) {
+                    $shouldUpdate = true;
+                }
                 $hashes[] = World::blockHash($X, $Y, $Z);
             }
             if ($shouldUpdate) {
                 yield from Zleep::sleepTicks($this, 5);
-                if (!$player->isConnected()) return;
+                if (!$player->isConnected()) {
+                    return;
+                }
                 $sight = $this->playerSights[$player->getId()] ?? null;
                 if ($sight !== null) {
-                    foreach ($hashes as $hash) unset($sight[$hash]);
+                    foreach ($hashes as $hash) {
+                        unset($sight[$hash]);
+                    }
                     $this->playerSights[$player->getId()] = $sight;
                 }
                 $this->updateSight($player, createSight: true);
@@ -263,7 +301,9 @@ final class Main extends API implements Listener {
      */
     public function onEntityTeleport(EntityTeleportEvent $event) : void {
         $player = $event->getEntity();
-        if (!$player instanceof Player) return;
+        if (!$player instanceof Player) {
+            return;
+        }
         unset($this->playerSights[$player->getId()]);
     }
 

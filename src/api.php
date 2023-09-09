@@ -25,7 +25,9 @@ abstract class API extends InternalStub {
             $pos->getFloorZ(),
         );
         $block = $player->getWorld()->getBlock($pos);
-        if (!isset($this->playerSights[$player->getId()][$hash])) return $block;
+        if (!isset($this->playerSights[$player->getId()][$hash])) {
+            return $block;
+        }
         return $this->blockThinToThick($block);
     }
 }

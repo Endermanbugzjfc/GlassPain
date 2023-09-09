@@ -1,6 +1,7 @@
 {
     "require-dev": {
-        "sof3/pharynx": "^0.3.6"
+        "sof3/pharynx": "^0.3.6",
+        "friendsofphp/php-cs-fixer": "^3.26"
     },
     "require": {
         "pocketmine/pocketmine-mp": "5.0.0",
