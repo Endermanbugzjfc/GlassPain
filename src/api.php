@@ -19,7 +19,7 @@ abstract class API extends InternalStub {
     /**
      * For anticheats.
      */
-    public function getClientSideBlock(Player $player, Vector3 $pos) : ?Block {
+    public function getClientSideBlock(Player $player, Vector3 $pos) : Block {
         $hash = World::blockHash(
             $pos->getFloorX(),
             $pos->getFloorY(),
@@ -29,7 +29,7 @@ abstract class API extends InternalStub {
         if (!isset($this->playerSights[$player->getId()][$hash])) {
             return $block;
         }
-        return $this->blockThinToThick($block);
+        return $this->blockThinToThick($block) ?? $block;
     }
 }
 
