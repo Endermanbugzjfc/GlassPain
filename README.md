@@ -33,6 +33,7 @@ a warning message will show on their screen so they will be less likely to get s
 - English
 - Chinese Traditional & Simplified
 - Vietnam *[@NhanAZ](https://github.com/NhanAZ)*
+- French *[@Bqleine](https://github.com/Bqleine)*
 
 # 🔌 API
 In spite of being a big spaghetti, this plugin still provides an API.
