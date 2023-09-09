@@ -27,12 +27,15 @@ use pocketmine\network\mcpe\protocol\ClientboundPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
 use pocketmine\player\Player;
-use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\World;
 use pocketmine\world\format\Chunk;
 
-final class Main extends PluginBase implements Listener {
+final class Main extends API implements Listener {
+    protected function onLoad() : void {
+        InternalStub::$instance = $this;
+    }
+
     protected function onEnable() : void {
         $pluginManager = $this->getServer()->getPluginManager();
         foreach ([
@@ -68,9 +71,10 @@ final class Main extends PluginBase implements Listener {
         return $player->hasPermission("glasspain.use");
     }
 
+    /**
+     * @var array<int, PlayerItemHeldEvent> Key = the player entity runtime ID.
+     */
     private array $playerHelds = [];
-
-    private array $playerSights = [];
 
     private BlockTranslator $blockTranslator;
 
@@ -89,7 +93,7 @@ final class Main extends PluginBase implements Listener {
         });
     }
 
-    public function lazyPlayerItemHeld(PlayerItemHeldEvent $event) : void {
+    private function lazyPlayerItemHeld(PlayerItemHeldEvent $event) : void {
         $item = $event->getItem();
         $player = $event->getPlayer();
         $createSight = $this->isTrackingPlayer($player) && $item instanceof ItemBlock && !$item->equals(VanillaItems::AIR());
@@ -100,41 +104,41 @@ final class Main extends PluginBase implements Listener {
     }
 
     /**
-     * @var array<int, Player> Key = player entity runtime ID.
+     * @var array<int, Player> Key = the player entity runtime ID.
      */
     private array $playerSightLocks = [];
 
     private function updateSight(Player $player, bool $createSight) : void {
         $world = $player->getWorld();
-        if (!isset($this->playerSightLocks[$player->getId()])) {
-            $checksPos = [
-                $playerPos = $player->getPosition(),
-                $playerPos->up(),
-            ];
-            if (!$player->isFlying()) $checksPos[] = $playerPos->down();
-            foreach ($checksPos as $checkPos) {
-                if ($this->blockThinToThick($world->getBlock($checkPos)) !== null) {
-                    $this->playerSightLocks[$player->getId()] = $player;
-                    Await::f2c(function () use ($player) : \Generator {
-                        $show = true;
-                        $messages = $this->getMessages($player);
-                        while ($player->isConnected() && isset($this->playerSightLocks[$player->getId()])) {
-                            $player->sendTitle(
-                                title: TextFormat::RESET,
-                                subtitle: $show ? $messages->tooClose : "",
-                                fadeIn: 0,
-                                stay: 40,
-                                fadeOut: 0,
-                            );
-                            yield from Zleep::sleepTicks($this, 20);
-                            $show = !$show;
-                        }
-                    });
-                    return;
-                }
+        $checksPos = [
+            $playerPos = $player->getPosition(),
+            $playerPos->up(),
+        ];
+        if (!$player->isFlying()) $checksPos[] = $playerPos->down();
+        foreach ($checksPos as $checkPos) {
+            if ($this->blockThinToThick($world->getBlock($checkPos)) !== null) {
+                if (isset($this->playerSightLocks[$player->getId()])) return;
+                $this->playerSightLocks[$player->getId()] = $player;
+                Await::f2c(function () use ($player) : \Generator {
+                    $show = true;
+                    $messages = $this->getMessages($player);
+                    while ($player->isConnected() && isset($this->playerSightLocks[$player->getId()])) {
+                        $player->sendTitle(
+                            title: TextFormat::RESET,
+                            subtitle: $show ? $messages->tooClose : "",
+                            fadeIn: 0,
+                            stay: 40,
+                            fadeOut: 0,
+                        );
+                        yield from Zleep::sleepTicks($this, 20);
+                        $show = !$show;
+                    }
+                });
+
+                return; // Player's position is unsafe to updating sight.
             }
         }
-        
+
         $newSight = [];
         if ($createSight) {
             $playerPos = $player->getPosition();
@@ -218,7 +222,7 @@ final class Main extends PluginBase implements Listener {
         foreach ($packets as $index => $packet) $connection->sendDataPacket($packet, $index === $sendIndex);
     }
 
-    private function blockThinToThick(Block $block) : ?Block {
+    protected function blockThinToThick(Block $block) : ?Block {
         if (!$block instanceof GlassPane) return null;
         if (!$block instanceof StainedGlassPane) return VanillaBlocks::GLASS();
         return VanillaBlocks::STAINED_GLASS()->setColor($block->getColor());
